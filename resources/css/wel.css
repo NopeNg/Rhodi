@@ -1,0 +1,61 @@
+
+  /* Css cho toàn bộ trang */
+  .bd {
+    height: 100vh;
+    /* Chiều cao bằng 100% màn hình */
+    padding-top: 10vh;
+    /* Xóa margin mặc định */
+    padding: 0;
+    /* Xóa padding mặc định */
+  }
+
+  /* Css cho header */
+
+  /* Css cho nội dung */
+  .mainn {
+    height: 390vh;
+    /* background-color: blue; */
+    padding-top: 1%;
+    padding-bottom: 5%;
+    
+  }
+
+  /* Css cho footer */
+  .ft {
+    height: 30vh;
+    color: black;
+    background-color: aqua;
+    display: flex;
+    justify-content: center;
+    /* Căn giữa theo chiều ngang */
+
+  }
+
+  .footer nav,
+  .footer form {
+    flex: 1;
+    /* Chia đều khoảng trống */
+    max-width: 250px;
+    /* Giới hạn chiều rộng */
+    margin-top: 2%;
+  }
+
+  .flex-none {
+    margin-right: 10%;
+    display: flex;
+    gap: 10%
+  }
+
+
+  .hidden-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+  }
+  
+  .hidden-on-scroll.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+
