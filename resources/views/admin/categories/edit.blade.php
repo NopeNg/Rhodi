@@ -6,6 +6,8 @@
   <title>Admin Dashboard</title>
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
+  <link href="https://unpkg.com/gridjs/dist/theme/mermaid.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/gridjs/dist/gridjs.umd.js"></script>
 
 </head>
 <body class="">
@@ -85,6 +87,14 @@
       <!-- Page Content -->
       <main class="p-6 flex-1 overflow-y-auto">
         <!-- name of each tab group should be unique -->
+  
+  
+
+
+        
+
+
+
 
       </main>
     </div>

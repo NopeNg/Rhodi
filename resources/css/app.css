@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @source "../views";
 @plugin "daisyui" {
-    themes: all;
+    themes: light --default, dark --prefersdark, cupcake;
   }
 
 @import "gridjs/dist/theme/mermaid.css";
