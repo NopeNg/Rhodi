@@ -44,7 +44,7 @@ Route::get('/admin-product-approve', function () {
 });
 
 // Route cho sản phẩm
-Route::resource('products', ProductController::class);
+Route::resource(name: 'products', controller: ProductController::class);
 
 // Route cho chi tiết sản phẩm
 Route::resource('product-details', ProductDetailController::class);
@@ -59,9 +59,14 @@ Route::get('/admin-customer-add', function () {
 });
 
 // Route cho quản lý danh mục
-Route::get('/admin/categories', [CategoryController::class, 'index'])->name('admin.categories.index');
-Route::get('/admin/categories/create', [CategoryController::class, 'create'])->name('admin.categories.create');
+Route::get('/admin/categories', action: [CategoryController::class, 'index'])->name('admin.categories.index');
+Route::get('/admin/categories/create', action: [CategoryController::class, 'create'])->name('admin.categories.create');
 Route::post('/admin/categories', [CategoryController::class, 'store'])->name('admin.categories.store');
-Route::get('/admin/categories/{id}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
-Route::put('/admin/categories/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
-Route::delete('/admin/categories/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+Route::get('/admin/categories/{category_id}/edit', [CategoryController::class, 'edit'])->name('admin.categories.edit');
+Route::put('/admin/categories/{category_id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+Route::delete('/admin/categories/{category_id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
+
+
+
+Route::get('/products/{product_id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('/products/{product_id}', [ProductController::class, 'update'])->name('products.update');

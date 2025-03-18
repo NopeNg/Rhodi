@@ -50,13 +50,13 @@
   </div>
 
   <!-- JavaScript -->
-  <script>
+  <!-- <script>
     // Headers and category data from the server
-    const headers = ['ID danh mục', 'Tên danh mục', 'Mô tả'];
+    const headers = ['ID danh mục', 'Tên danh mục', 'Tên chi tiết danh mục', 'Thao tác'];
     const data = @json($categories).map(category => [
       category.category_id, 
       category.category_name, 
-      category.description || 'Không có mô tả'
+      category.category_detail_name 
     ]);
 
     // Render Grid.js Table
@@ -73,7 +73,67 @@
         td: 'bg-white text-black'
       }
     }).render(document.getElementById('gridjs-table'));
-  </script>
+  </script> -->
+
+  <script>
+  const headers = [
+    'ID danh mục',
+    'Tên danh mục',
+    'Mô tả',
+    'Hành động' // Thêm cột hành động
+  ];
+
+  const data = @json($categories).map(category => [
+    category.category_id,
+    category.category_name,
+    category.category_detail_name,
+    gridjs.html(`
+  <div class="flex gap-2">
+    <a href="/admin/categories/${category.category_id}/edit" 
+       class="px-3 py-1 btn btn-primary text-white rounded hover:bg-primary-100">
+       Sửa
+    </a>
+    <a href="#" onclick="deleteCategory(${category.category_id}); return false;" 
+       class="px-3 py-1 btn btn-error text-white rounded hover:bg-red-600">
+       Xoá
+    </a>
+  </div>
+`)
+
+  ]);
+
+  new gridjs.Grid({
+    columns: headers,
+    data: data,
+    search: true,
+    sort:true,
+    pagination: {
+      limit: 10
+    },
+    className: {
+      table: 'bg-white text-black',
+      thead: 'bg-gray-100',
+      td: 'bg-white text-black'
+    }
+  }).render(document.getElementById('gridjs-table'));
+</script>
+
+<!-- Thêm script để xử lý xoá qua form ẩn -->
+<form id="delete-form" method="POST" style="display: none;">
+  @csrf
+  @method('DELETE')
+</form>
+
+<script>
+  function deleteCategory(category_id) {
+    if (confirm('Bạn có chắc chắn muốn xoá danh mục này?')) {
+      const form = document.getElementById('delete-form');
+      form.action = `/admin/categories/${category_id}`;
+      form.submit();
+    }
+  }
+</script>
+
 
   <script>
     // Sidebar toggle functionality

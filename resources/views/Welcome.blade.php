@@ -7,8 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Main</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
-  @vite(entrypoints: 'resources/css/wel.css')
+  @vite(['resources/css/app.css', 'resources/js/app.js','resources/css/wel.css'])
 
 </head>
 
@@ -177,10 +176,9 @@
   </header>
 
   <!-- Đây là nơi chứa toàn bộ nội dung -->
-  <main class="mainn hidden-on-scroll">
-
+  <main class="mainn hidden-on-scroll z-10 ">
 <!-- Banner Carousel -->
-<div class="relative w-full overflow-hidden h-[90vh] hidden-on-scroll">
+<div class="relative w-full overflow-hidden h-[90vh] ">
   <!-- Slide Items -->
   <div class="carousel-slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out" id="slide1">
     <img src="https://pos.nvncdn.com/e41e16-5527/bn/20241024_o70FW3pT.gif" class="w-full h-full object-cover" />

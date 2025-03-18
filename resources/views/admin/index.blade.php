@@ -6,7 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
 
-  @vite(['resources/css/app.css', 'resources/css/wel.css', 'resources/js/app.js'])
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @vite(['resources/css/wel.css'])
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 

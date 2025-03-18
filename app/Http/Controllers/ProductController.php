@@ -10,7 +10,8 @@ class ProductController extends Controller
     public function index()
     {
         $products = Products::all(); // Lấy tất cả sản phẩm
-        return view('admin.product.product', compact('products')); // Trả về view với danh sách sản phẩm
+        $categories = Category::all();
+        return view('admin.product.product', compact('products', 'categories')); // Trả về view với danh sách sản phẩm
     }
 
     public function create()
@@ -23,7 +24,7 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = Products::findOrFail($id);
-        return view('admin.product.edit', compact('product')); // Đảm bảo rằng bạn có view cho chỉnh sửa sản phẩm
+        return view('admin.product.edit', compact('product'));
     }
 
     public function update(Request $request, $id)
@@ -70,4 +71,5 @@ class ProductController extends Controller
     
         return redirect()->route('products.index')->with('success', 'Sản phẩm đã được thêm thành công.');
     }
+
 }

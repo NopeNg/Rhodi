@@ -7,7 +7,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Create Category</title>
+  <title>Edit Product</title>
 
   @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -71,36 +71,57 @@
           <div class="p-3 border-b flex items-center gap-2">
             <span class="font-medium">haell</span>
           </div>
-          <div class="flex flex-col p-2 bg-white rounded-md shadow-lg">
-            <a href="#" class="p-2 hover:bg-gray-200">Profile</a>
-            <a href="#" class="p-2 hover:bg-gray-200">Settings</a>
-            <a href="#" class="p-2 hover:bg-gray-200">Logout</a>
-          </div>
+          <a href="profile" class="block px-4 py-2 hover:bg-gray-200">👤 Profile</a>
+          <a href="logout" class="block px-4 py-2 text-red-500 hover:bg-gray-100">🚪 Logout</a>
         </div>
-      </div>
+      </ div>
     </div>
 
-    <!-- Main content -->
-    <div class="flex-grow p-6">
-      <h2 class="text-2xl font-bold mb-4">Create New Category</h2>
-      <form action="{{ route('admin.categories.store') }}" method="POST">
-        @csrf
-        <div class="mb-4">
-          <label for="category_name" class="block text-sm font-medium text-gray-700">Category Name</label>
-          <input type="text" name="category_name" id="category_name" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" />
-          @error('category_name')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-          @enderror
-        </div>
-        <div class="mb-4">
-          <label for="category_detail_name" class="block text-sm font-medium text-gray-700">Category Detail Name</label>
-          <input type="text" name="category_detail_name" id="category_detail_name" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-opacity-50" />
-          @error('category_detail_name')
-            <span class="text-red-500 text-sm">{{ $message }}</span>
-          @enderror
-        </div>
-        <button type="submit" class="mt-4 btn btn-primary text-white px-4 py-2 rounded-md">Create Category</button>
-      </form>
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col overflow-auto">
+      <!-- Topbar -->
+      <div class="p-4 shadow flex items-center">
+        <button id="toggleSidebar" class="px-4 py-2 rounded-md mr-4">☰</button>
+        <h2 class="text-xl font-bold">Edit Product</h2>
+      </div>
+
+      <!-- Page Content -->
+      <main class="p-6 flex-1 overflow-y-auto">
+        <form action="{{ route('products.update', $product->product_id) }}" method="POST">
+          @csrf
+          @method('PUT')
+          <div class="mb-3">
+            <label for="product_code" class="form-label">Mã Sản Phẩm</label>
+            <input type="text" name="product_code" class="form-control" value="{{ old('product_code', $product->product_code) }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="name" class="form-label">Tên Sản Phẩm</label>
+            <input type="text" name="name" class="form-control" value="{{ old('name', $product->name) }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="category_id" class="form-label">ID Danh Mục</label>
+            <input type="number" name="category_id" class="form-control" value="{{ old('category_id', $product->category_id) }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="price" class="form-label">Giá</label>
+            <input type="number" name="price" class="form-control" value="{{ old('price', $product->price) }}" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="status" class="form-label">Trạng Thái</label>
+            <select name="status" class="form-select" required>
+              <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>Kích Hoạt</option>
+              <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>Không Kích Hoạt</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Cập Nhật Sản Phẩm</button>
+          <a href="{{ route('products.index') }}" class="btn btn-secondary">Quay Lại</a>
+        </form>
+      </main>
     </div>
   </div>
 </body>
