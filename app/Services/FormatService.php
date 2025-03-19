@@ -6,8 +6,9 @@ class FormatService
    
     public function currencyVN($amount, $decimals = 3): string
     {
-        return number_format($amount, $decimals, ',', '.') . ' ₫';
+        return number_format($amount, decimals: $decimals, decimal_separator: ',', thousands_separator: '.') . ' ₫';
     }
+
 
 
 

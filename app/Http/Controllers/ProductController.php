@@ -6,18 +6,38 @@ use App\Models\Category;
 use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use App\Services\FormatService;
 class ProductController extends Controller
 {
+
+    protected $format;
+
+    public function __construct(FormatService $format)
+    {
+        $this->format = $format;
+    }
+    
+
+    
     public function index()
     {
+        
         $products = DB::table('products')
             ->join('category', 'products.category_id', '=', 'category.category_id')
             ->select('products.*', 'category.category_name', 'category.category_detail_name')
             ->get();
 
+
+            $products->transform(function ($detail) {
+                $detail->price = $this->format->currencyVN($detail->price);
+                return $detail;
+            });
+    
+
         return view('admin.product.product', compact('products'));
     }
+
+    
 
     public function create()
     {

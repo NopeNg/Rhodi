@@ -85,3 +85,5 @@ Route::delete('/admin/categories/{category_id}', [CategoryController::class, 'de
 Route::get('/products/{product_id}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
 
 Route::put('/products/{product_id}', [ProductController::class, 'update'])->name('admin.products.update');
+Route::get('/admin/product/create', [ProductDetailController::class, 'create'])->name('product.details.create');
+Route::post('/admin/product', [ProductDetailController::class, 'store'])->name('product.details.store');

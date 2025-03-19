@@ -4,12 +4,48 @@ use App\Models\Category;
 use App\Models\Products;
 
 use Illuminate\Support\Facades\DB;
-
+use App\Services\FormatService;
 use Illuminate\Http\Request;
 use App\Models\ProductDetail;
 
 class ProductDetailController extends Controller
 {
+
+
+    protected $format;
+    public function create($product_id)
+    {
+        // Lấy thông tin sản phẩm để hiển thị trong form
+        $product = Products::findOrFail($product_id);
+        return view('product.create', compact('product'));
+    }
+
+    public function store(Request $request)
+    {
+        // Xác thực dữ liệu
+        $request->validate([
+            'product_code' => 'required|string|max:255',
+            'description' => 'required|string',
+            'size' => 'required|string',
+            'color' => 'required|string',
+            'cost' => 'required|numeric',
+            'selling_price' => 'required|numeric',
+            'stock_quantity' => 'required|integer',
+            // Thêm các trường khác nếu cần
+        ]);
+
+        // Tạo chi tiết sản phẩm mới
+        ProductDetail::create($request->all());
+
+        return redirect()->route('product.details', $request->product_id)
+            ->with('success', 'Chi tiết sản phẩm đã được thêm thành công.');
+    }
+    public function __construct(FormatService $format)
+    {
+        $this->format = $format;
+    }
+
+
     /**
      * Hiển thị danh sách chi tiết sản phẩm.
      *
@@ -28,9 +64,16 @@ class ProductDetailController extends Controller
             ->select(
                 'product_detail.*',
                 'image.image_url',
-               
+
             )
             ->get();
+        //format 
+
+
+        $productDetails->transform(function ($detail) {
+            $detail->selling_price = $this->format->currencyVN($detail->selling_price);
+            return $detail;
+        });
 
         // Trả về view với dữ liệu
         return view('admin.product.productdetail', compact('product', 'productDetails'));
