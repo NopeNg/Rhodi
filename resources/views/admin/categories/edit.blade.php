@@ -123,19 +123,19 @@
           <form action="{{ route('admin.categories.store') }}" method="POST">
             @csrf
             <div class="form-group mb-3">
-              <label for="category_detail_name">Tên cũ:  </label>
-              <input class="w-200"  value="{{ old('category_name', $category-> category_name) }} " disabled></input>
+              <label for="category_detail_name">Tên cũ: </label>
+              <input class="w-200" value="{{ old('category_name', $category->category_name) }} " disabled></input>
             </div>
 
             <div class="form-group mb-3">
-              <label for="category_detail_name">Chi tiết danh mục cũ:  </label>
-              <input class="w-200 bg-gray-200"  value="{{ old('category_detail_name', $category-> category_detail_name) }} " disabled></input>
+              <label for="category_detail_name">Chi tiết danh mục cũ: </label>
+              <input class="w-200 bg-gray-200"
+                value="{{ old('category_detail_name', $category->category_detail_name) }} " disabled></input>
             </div>
 
             <div class="form-group mb-3">
               <label for="category_name">Tên danh mục</label>
-              <input type="text" name="category_name" class="form-control border"
-                value="{{ old('category_name', $category->category_name) }}" required>
+                      <input type="text" name="category_name" class="form-control border" required>
             </div>
 
             <div class="form-group mb-3">

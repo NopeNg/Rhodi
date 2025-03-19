@@ -14,12 +14,14 @@ class Products extends Model {
 
     // Các cột có thể được gán hàng loạt
     protected $fillable = [
-        'product_code', // Không cần đưa 'product_id' vào đây nếu nó tự động tăng
         'name',
         'category_id',
         'price',
         'status',
+        'main_image',
+        'total_quantity'
     ];
+    
 
     // Quan hệ với model Category
     public function category() {

@@ -1,64 +1,54 @@
 <?php
 namespace App\Http\Controllers;
+use App\Models\Category;
+use App\Models\Products;
 
-use App\Models\ProductDetail;
+use Illuminate\Support\Facades\DB;
+
 use Illuminate\Http\Request;
+use App\Models\ProductDetail;
 
 class ProductDetailController extends Controller
 {
-    public function create()
+    /**
+     * Hiển thị danh sách chi tiết sản phẩm.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function index($product_id)
     {
-        return view('product_details.create');
+        // Lấy sản phẩm, nếu không tồn tại sẽ trả về lỗi 404
+        $product = Products::findOrFail($product_id);
+
+        // Lấy danh sách chi tiết sản phẩm liên quan, có join bảng products để lấy thêm thông tin
+        $productDetails = DB::table('product_detail')
+            ->join('image', 'product_detail.product_code', '=', 'image.product_code')
+            ->join('products', 'product_detail.product_id', '=', 'products.product_id')
+            ->where('product_detail.product_id', $product_id)
+            ->select(
+                'product_detail.*',
+                'image.image_url',
+               
+            )
+            ->get();
+
+        // Trả về view với dữ liệu
+        return view('admin.product.productdetail', compact('product', 'productDetails'));
     }
 
-    public function store(Request $request)
+
+    /**
+     * Hiển thị chi tiết của một sản phẩm.
+     *
+     * @param int $id
+     * @return \Illuminate\View\View
+     */
+    public function show($id)
     {
-        $request->validate([
-            'product_id' => 'required',
-            'product_code' => 'required',
-            'name' => 'required',
-            'description' => 'nullable',
-            'brand' => 'nullable',
-            'stock_quantity' => 'required|integer',
-            'size' => 'nullable',
-            'color' => 'nullable',
-            'cost' => 'required|numeric',
-            'profit_margin' => 'nullable|numeric',
-            'discount_rate' => 'nullable|numeric',
-            'selling_price' => 'required|numeric',
-            'status' => 'required',
-        ]);
+        // Tìm sản phẩm theo ID
+        $product = ProductDetail::with('products', 'image')->findOrFail($id);
 
-        ProductDetail::create($request->all());
-        return redirect()->route('product-details.index')->with('success', 'Product detail created successfully.');
-    }
-
-    public function edit($id)
-    {
-        $productDetail = ProductDetail::findOrFail($id);
-        return view('product_details.edit', compact('productDetail'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'product_id' => 'required',
-            'product_code' => 'required',
-            'name' => 'required',
-            'description' => 'nullable',
-            'brand' => 'nullable',
-            'stock_quantity' => 'required|integer',
-            'size' => 'nullable',
-            'color' => 'nullable',
-            'cost' => 'required|numeric',
-            'profit_margin' => 'nullable|numeric',
-            'discount_rate' => 'nullable|numeric',
-            'selling_price' => 'required|numeric',
-            'status' => 'required',
-        ]);
-
-        $productDetail = ProductDetail::findOrFail($id);
-        $productDetail->update($request->all());
-        return redirect()->route('product-details.index')->with('success', 'Product detail updated successfully.');
+        // Trả về view với chi tiết sản phẩm
+        return view('product_details.show', compact('product'));
     }
 }

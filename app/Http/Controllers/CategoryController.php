@@ -77,7 +77,7 @@ class CategoryController extends Controller
             'category_name' => 'required|string|max:100',
             'category_detail_name' => 'required|string|max:255',
         ]);
-        //lấy dữ liệu từ form
+        //lấy dữ liệu từ for
         $category = Category::findOrFail($category_id);
         $category->update($request->all());
         return redirect()->route('admin.categories.index')

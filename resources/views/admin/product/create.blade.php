@@ -1,43 +1,3 @@
-<!-- <form action="{{ route('products.store') }}" method="POST">
-  @csrf
-  <div class="mb-3">
-    <label for="product_code" class="form-label">Mã Sản Phẩm</label>
-    <input type="text" name="product_code" class="form-control" required>
-  </div>
-
-  <div class="mb-3">
-    <label for="name" class="form-label">Tên Sản Phẩm</label>
-    <input type="text" name="name" class="form-control" required>
-  </div>
-
-  <div class="mb-3">
-    <label for="category_id" class="form-label">ID Danh Mục</label>
-    <input type="number" name="category_id" class="form-control" required>
-  </div>
-
-  <div class="mb-3">
-    <label for="price" class="form-label">Giá</label>
-    <input type="number" name="price" class="form-control" required>
-  </div>
-
-  <div class="mb-3">
-    <label for="status" class="form-label">Trạng Thái</label>
-    <select name="status" class="form-select" required>
-      <option value="active">Kích Hoạt</option>
-      <option value="inactive">Không Kích Hoạt</option>
-    </select>
-  </div>
-
-  <button type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
-  <a href="{{ route('products.index') }}" class="btn btn-secondary">Quay Lại</a>
-</form> -->
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 
@@ -139,12 +99,9 @@
         <!-- name of each tab group should be unique -->
       
 
-        <form action="{{ route('products.store') }}" method="POST">
+        <!-- <form action="{{ route('products.store') }}" method="POST">
   @csrf
-  <div class="mb-3">
-    <label for="product_code" class="form-label">Product Code</label>
-    <input type="text" name="product_code" class="form-control" required>
-  </div>
+ 
 
   <div class="mb-3">
     <label for="name" class="form-label">Name</label>
@@ -154,6 +111,47 @@
   <div class="mb-3">
     <label for="category_id" class="form-label">Category Id</label>
     <input type="number" name="category_id" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="total_quantity" class="form-label">Total Quantity</label>
+    <input type="number" name="total_quantity" class="form-control" required>
+  </div>
+
+<div class="mb-3">
+    <label for="price" class="form-label">Price</label>
+    <input type="number" name="price" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="status" class="form-label">Status</label>
+    <select name="status" class="form-select" required>
+      <option value="active">Approve</option>
+      <option value="inactive">Not Approve</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Add New Product</button>
+  <a href="{{ route('products.index') }}" class="btn btn-secondary">Return</a>
+</form> -->
+
+
+<form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+  @csrf
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <input type="text" name="name" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="category_id" class="form-label">Category Id</label>
+    <input type="number" name="category_id" class="form-control" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="total_quantity" class="form-label">Total Quantity</label>
+    <input type="number" name="total_quantity" class="form-control" required>
   </div>
 
   <div class="mb-3">
@@ -167,6 +165,11 @@
       <option value="active">Approve</option>
       <option value="inactive">Not Approve</option>
     </select>
+  </div>
+
+  <div class="mb-3">
+    <label for="main_image" class="form-label">Main Image</label>
+    <input type="file" name="main_image" class="form-control" accept="image/*">
   </div>
 
   <button type="submit" class="btn btn-primary">Add New Product</button>

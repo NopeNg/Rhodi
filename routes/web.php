@@ -47,7 +47,21 @@ Route::get('/admin-product-approve', function () {
 Route::resource(name: 'products', controller: ProductController::class);
 
 // Route cho chi tiết sản phẩm
-Route::resource('product-details', ProductDetailController::class);
+
+// Route::get(uri: '/admin/product/productdetail', [ProductDetailController::class, 'index'])->name('admin.product.productdetail.index');
+
+
+
+
+
+    Route::get('/admin/product/{product_id}/details', [ProductDetailController::class, 'index'])
+    ->name('product.details');
+
+
+
+
+
+
 
 // Route cho quản lý khách hàng
 Route::get('/admin-customer-manage', function () {
@@ -68,5 +82,6 @@ Route::delete('/admin/categories/{category_id}', [CategoryController::class, 'de
 
 
 
-Route::get('/products/{product_id}/edit', [ProductController::class, 'edit'])->name('products.edit');
-Route::put('/products/{product_id}', [ProductController::class, 'update'])->name('products.update');
+Route::get('/products/{product_id}/edit', [ProductController::class, 'edit'])->name('admin.products.edit');
+
+Route::put('/products/{product_id}', [ProductController::class, 'update'])->name('admin.products.update');
