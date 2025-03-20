@@ -1,39 +1,3 @@
-<?php
-namespace App\Services;
-
-class FormatService
-{
-   
-    // Hàm chuyển đổi số thành tiền tệ Việt Nam
-    public function currencyVN($amount, $decimals = 3): string
-    {
-        return number_format($amount, decimals: $decimals, decimal_separator: ',', thousands_separator: '.') . ' ₫';
-    }
-
-    // Hàm tạo mã sản phẩm
-
-    public function generateProductCode(string $name, string $brand, string $size, string $color): string
-    {
-        // Hàm slugify để loại bỏ dấu, khoảng trắng, ký tự đặc biệt
-        $slugify = function ($text) {
-            $text = strtolower($text);
-            $text = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $text); // bỏ dấu tiếng Việt
-            $text = preg_replace('/[^a-z0-9]/', '', $text); // chỉ giữ chữ và số
-            return $text;
-        };
-
-        return $slugify($name) . $slugify($brand) . $slugify($size) . $slugify($color);
-    }
-
-
-}
-
-
-
-?>
-<!-- Hàm chuyển tên và size và màu thành mã sản phẩm khi chưa add sản phẩm mới  -->
-<script>
-
 function generateProductCode(productNameId, brandId, sizeId, colorId, outputId) {
     // Lấy giá trị từ các trường nhập liệu
     const productName = document.getElementById(productNameId).value;
@@ -75,5 +39,3 @@ function setupProductCodeGeneration(productNameId, brandId, sizeId, colorId, out
         setupProductCodeGeneration('product_name', 'brand', 'size', 'color', 'product_code');
     });
 </script> */}
-
-</script>

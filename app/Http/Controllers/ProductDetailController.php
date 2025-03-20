@@ -2,7 +2,7 @@
 namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Products;
-
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Services\FormatService;
 use Illuminate\Http\Request;
@@ -17,29 +17,63 @@ class ProductDetailController extends Controller
     {
         // Lấy thông tin sản phẩm để hiển thị trong form
         $product = Products::findOrFail($product_id);
-        return view('product.create', compact('product'));
+        $productCode = $this->generateProductCode($product->name, $product->brand, '', ''); 
+
+        return view('admin.product.addproductdetail', compact('product'));
     }
 
     public function store(Request $request)
     {
-        // Xác thực dữ liệu
+        // 1. Xác thực dữ liệu
         $request->validate([
-            'product_code' => 'required|string|max:255',
+            'product_name' => 'required|string|max:255', // Thêm trường product_name
             'description' => 'required|string',
             'size' => 'required|string',
             'color' => 'required|string',
             'cost' => 'required|numeric',
             'selling_price' => 'required|numeric',
             'stock_quantity' => 'required|integer',
-            // Thêm các trường khác nếu cần
+            'product_id' => 'required|exists:products,product_id',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048', // validate file ảnh
         ]);
 
-        // Tạo chi tiết sản phẩm mới
-        ProductDetail::create($request->all());
+        // 2. Tạo mã sản phẩm
+        $productCode = $this->generateProductCode($request->product_name, $request->brand, $request->size, $request->color);
 
-        return redirect()->route('product.details', $request->product_id)
-            ->with('success', 'Chi tiết sản phẩm đã được thêm thành công.');
+        // 3. Tạo chi tiết sản phẩm
+        ProductDetail::create([
+            'product_code' => $productCode,
+            'description' => $request->description,
+            'size' => $request->size,
+            'color' => $request->color,
+            'cost' => $request->cost,
+            'selling_price' => $request->selling_price,
+            'stock_quantity' => $request->stock_quantity,
+            'product_id' => $request->product_id,
+        ]);
+
+        // 4. Lưu ảnh vào storage theo product_code
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $index => $imageFile) {
+                $folder = 'images/' . $productCode; // Folder: storage/app/public/images/{product_code}
+                $fileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
+
+                // Lưu file vào storage/app/public/images/{product_code}/filename.jpg
+                $path = $imageFile->storeAs($folder, $fileName, 'public');
+
+                // Ghi đường dẫn vào bảng image
+                DB::table('image')->insert([
+                    'product_code' => $productCode,
+                    'image_url' => $path, // Lưu: images/ABC001/xyz.jpg
+                    'is_main' => $index === 0 ? 1 : 0,
+                ]);
+            }
+        }
+
+        return redirect()->route('product.details.index', $request->product_id)
+            ->with('success', 'Chi tiết sản phẩm và ảnh đã được thêm thành công.');
     }
+
     public function __construct(FormatService $format)
     {
         $this->format = $format;
@@ -53,32 +87,25 @@ class ProductDetailController extends Controller
      */
     public function index($product_id)
     {
-        // Lấy sản phẩm, nếu không tồn tại sẽ trả về lỗi 404
+        // Lấy sản phẩm
         $product = Products::findOrFail($product_id);
-
-        // Lấy danh sách chi tiết sản phẩm liên quan, có join bảng products để lấy thêm thông tin
-        $productDetails = DB::table('product_detail')
-            ->join('image', 'product_detail.product_code', '=', 'image.product_code')
-            ->join('products', 'product_detail.product_id', '=', 'products.product_id')
-            ->where('product_detail.product_id', $product_id)
-            ->select(
-                'product_detail.*',
-                'image.image_url',
-
-            )
+    
+        // Lấy bản ghi mới nhất theo product_code dựa trên imported_at
+        $latestProductDetails = DB::table('product_detail as pd1')
+            ->join('image', 'pd1.product_code', '=', 'image.product_code')
+            ->join('products', 'pd1.product_id', '=', 'products.product_id')
+            ->where('pd1.product_id', $product_id)
+            ->whereRaw('pd1.imported_at = (
+                SELECT MAX(pd2.imported_at)
+                FROM product_detail as pd2
+                WHERE pd2.product_code = pd1.product_code
+            )')
+            ->select('pd1.*', 'image.image_url')
             ->get();
-        //format 
-
-
-        $productDetails->transform(function ($detail) {
-            $detail->selling_price = $this->format->currencyVN($detail->selling_price);
-            return $detail;
-        });
-
-        // Trả về view với dữ liệu
-        return view('admin.product.productdetail', compact('product', 'productDetails'));
+    
+        return view('admin.product.productdetail', compact('product', 'latestProductDetails', 'product_id'));
     }
-
+    
 
     /**
      * Hiển thị chi tiết của một sản phẩm.
@@ -93,5 +120,18 @@ class ProductDetailController extends Controller
 
         // Trả về view với chi tiết sản phẩm
         return view('product_details.show', compact('product'));
+    }
+
+
+
+    private function generateProductCode($productName, $brand, $size, $color)
+    {
+        // Chuyển tên sản phẩm thành không dấu, viết thường và không có khoảng trắng
+        $productNameSlug = Str::slug($productName, ''); // Sử dụng Str::slug để loại bỏ dấu và khoảng trắng
+    
+        // Tạo mã sản phẩm theo công thức
+        $productCode = strtolower($productNameSlug) . $brand . $size . $color;
+    
+        return $productCode;
     }
 }

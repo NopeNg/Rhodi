@@ -93,7 +93,7 @@
     <div class="flex-1 flex flex-col overflow-auto">
       <!-- Topbar -->
       <div class="p-4 shadow flex items-center">
-      <button id="toggleSidebar" class="px-4 py-2 rounded-md mr-4">☰</button>
+      <button id="toggleSidebar" class="px-4 py-2 rounded-md mr-4 border">☰</button>
       <h2 class="text-xl font-bold">Dashboard</h2>
       </div>
 
@@ -107,7 +107,8 @@
       </div>
     @endif
         <div class="mb-4">
-        <a href="{{ route('product.details.create') }}" class="btn btn-primary">Thêm Chi Tiết Sản Phẩm</a>
+        <a href="{{ route('product.details.create', ['product_id' => $product_id]) }}" class="btn btn-primary">Thêm
+          Chi Tiết Sản Phẩm</a>
         </div>
         <table class="table">
         <thead>
@@ -130,7 +131,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($productDetails as $pds)
+          @foreach($latestProductDetails as $pds)
         <tr>
         <td>{{ $pds->product_detail_id }}</td>
         <td>{{ $pds->product_id }}</td>
@@ -149,7 +150,8 @@
         <td>
         <div class="relative inline-block text-left dropdown dropdown-end">
         <button tabindex="0" class="btn btn-sm">Actions ⏷</button>
-        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-base-content-600 text-white">
+        <ul tabindex="0"
+          class="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-purple-900 text-yellow-200">
           <li>
           <a href="#">✏️ Edit</a>
           </li>
@@ -176,7 +178,7 @@
     </div>
     </div>
 
-    <!-- JavaScript -->
+    <!--JavaScript -->
     <script>
     const toggleBtn = document.getElementById('toggleSidebar');
     const sidebar = document.getElementById('sidebar');
@@ -187,7 +189,7 @@
 
     toggleBtn.addEventListener('click', () => {
       isOpen = !isOpen;
-      sidebar.style.width = isOpen ? '220px' : '0';
+      sidebar.style.width = isOpen ? '220px' : '0px';
     });
 
     profileBtn.addEventListener('click', () => {
@@ -195,9 +197,10 @@
     });
 
     // Click outside to hide profile menu
-    window.addEventListener('click', (e) => if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
+    window.addEventListener('click', (e) => {
+      if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
       profileMenu.classList.add('hidden');
-    }
+      }
     });
 
     // Dropdown menu for actions
