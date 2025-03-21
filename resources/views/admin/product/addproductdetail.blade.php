@@ -78,13 +78,13 @@
                         <label for="description" class="block text-sm font-medium text-gray-700">Product code</label>
                         <input id="product_code"
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            disabled></input>
+                            ></input>
                     </div>
                     <div class="mb-4">
                         <label for="brand" class="block text-sm font-medium text-gray-700">Thương Hiệu</label>
                         <input type="text" name="brand" id="brand"
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            value="{{ $product->brand }}" readonly disabled>
+                            value="{{ $product->brand }}"  >
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-700">Mô Tả</label>
                         <textarea name="description" id="description"
@@ -122,13 +122,7 @@
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
                             required>
                     </div>
-                    <div class="mb-4">
-                        <label for="product_code" class="block text-sm font-medium text-gray-700">Mã Sản Phẩm</label>
-                        <input type="text" name="product_code" id="product_code"
-                            value="{{ old('product_code', $product->product_code) }}"
-                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                            readonly disabled>
-                    </div>
+                  
 
                     <div class="mb-4">
                         <label for="images" class="block text-sm font-medium text-gray-700">Hình Ảnh</label>
