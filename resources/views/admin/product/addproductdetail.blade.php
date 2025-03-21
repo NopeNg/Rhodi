@@ -81,6 +81,11 @@
                             disabled></input>
                     </div>
                     <div class="mb-4">
+                        <label for="brand" class="block text-sm font-medium text-gray-700">Thương Hiệu</label>
+                        <input type="text" name="brand" id="brand"
+                            class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                            value="{{ $product->brand }}" readonly disabled>
+                    <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-700">Mô Tả</label>
                         <textarea name="description" id="description"
                             class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"

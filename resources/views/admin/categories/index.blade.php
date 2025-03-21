@@ -13,10 +13,14 @@
 
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside id="sidebar" class="transition-all duration-300 w-[220px] shadow-lg flex flex-col bg-white">
+    <aside id="sidebar" class="transition-all duration-300 w-[220px] shadow-lg flex flex-col bg-white overflow-hidden">
       <h1 class="text-xl font-bold p-4">Admin Panel</h1>
       <ul class="menu flex-grow space-y-2 px-4">
-        <li><a href="/dashboard" class="flex items-center gap-2 hover:bg-gray-200 rounded-lg p-2">🏠 Dashboard</a></li>
+        <li>
+          <a href="/dashboard" class="flex items-center gap-2 hover:bg-gray-200 rounded-lg p-2">
+            🏠 Dashboard
+          </a>
+        </li>
         <li>
           <details class="group">
             <summary class="flex items-center gap-2 cursor-pointer hover:bg-gray-200 rounded-lg p-2">
@@ -42,30 +46,42 @@
       <!-- Page Content -->
       <main class="p-6 flex-1 overflow-y-auto">
         <h1 class="text-2xl font-bold mb-4">Danh sách loại sản phẩm</h1>
-
         <!-- Grid.js Table -->
         <div id="gridjs-table"></div>
       </main>
     </div>
   </div>
 
-  <!-- JavaScript -->
-  <!-- <script>
-    // Headers and category data from the server
-    const headers = ['ID danh mục', 'Tên danh mục', 'Tên chi tiết danh mục', 'Thao tác'];
+  <!-- Grid.js Script -->
+  <script>
+    const headers = [
+      'ID danh mục',
+      'Tên danh mục',
+      'Mô tả',
+      'Hành động'
+    ];
+
     const data = @json($categories).map(category => [
-      category.category_id, 
-      category.category_name, 
-      category.category_detail_name 
+      category.category_id,
+      category.category_name,
+      category.category_detail_name,
+      gridjs.html(`
+        <div class="flex gap-2">
+          <a href="/admin/categories/${category.category_id}/edit" 
+             class="px-3 py-1 btn btn-primary text-white rounded hover:bg-primary-100">Sửa</a>
+          <a href="#" onclick="deleteCategory(${category.category_id}); return false;" 
+             class="px-3 py-1 btn btn-error text-white rounded hover:bg-red-600">Xoá</a>
+        </div>
+      `)
     ]);
 
-    // Render Grid.js Table
     new gridjs.Grid({
       columns: headers,
       data: data,
-      search: true,          // Enable searching
+      search: true,
+      sort: true,
       pagination: {
-        limit: 10             // Show 10 rows per page
+        limit: 10
       },
       className: {
         table: 'bg-white text-black',
@@ -73,77 +89,33 @@
         td: 'bg-white text-black'
       }
     }).render(document.getElementById('gridjs-table'));
-  </script> -->
+  </script>
+
+  <!-- Delete Form -->
+  <form id="delete-form" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+  </form>
 
   <script>
-  const headers = [
-    'ID danh mục',
-    'Tên danh mục',
-    'Mô tả',
-    'Hành động' // Thêm cột hành động
-  ];
-
-  const data = @json($categories).map(category => [
-    category.category_id,
-    category.category_name,
-    category.category_detail_name,
-    gridjs.html(`
-  <div class="flex gap-2">
-    <a href="/admin/categories/${category.category_id}/edit" 
-       class="px-3 py-1 btn btn-primary text-white rounded hover:bg-primary-100">
-       Sửa
-    </a>
-    <a href="#" onclick="deleteCategory(${category.category_id}); return false;" 
-       class="px-3 py-1 btn btn-error text-white rounded hover:bg-red-600">
-       Xoá
-    </a>
-  </div>
-`)
-
-  ]);
-
-  new gridjs.Grid({
-    columns: headers,
-    data: data,
-    search: true,
-    sort:true,
-    pagination: {
-      limit: 10
-    },
-    className: {
-      table: 'bg-white text-black',
-      thead: 'bg-gray-100',
-      td: 'bg-white text-black'
+    function deleteCategory(category_id) {
+      if (confirm('Bạn có chắc chắn muốn xoá danh mục này?')) {
+        const form = document.getElementById('delete-form');
+        form.action = `/admin/categories/${category_id}`;
+        form.submit();
+      }
     }
-  }).render(document.getElementById('gridjs-table'));
-</script>
+  </script>
 
-<!-- Thêm script để xử lý xoá qua form ẩn -->
-<form id="delete-form" method="POST" style="display: none;">
-  @csrf
-  @method('DELETE')
-</form>
-
-<script>
-  function deleteCategory(category_id) {
-    if (confirm('Bạn có chắc chắn muốn xoá danh mục này?')) {
-      const form = document.getElementById('delete-form');
-      form.action = `/admin/categories/${category_id}`;
-      form.submit();
-    }
-  }
-</script>
-
-
+  <!-- Toggle Sidebar Script -->
   <script>
-    // Sidebar toggle functionality
     const toggleBtn = document.getElementById('toggleSidebar');
     const sidebar = document.getElementById('sidebar');
-    let isOpen = true;
 
     toggleBtn.addEventListener('click', () => {
-      isOpen = !isOpen;
-      sidebar.style.width = isOpen ? '220px' : '0';
+      sidebar.classList.toggle('w-[220px]');
+      sidebar.classList.toggle('w-0');
+      sidebar.classList.toggle('invisible');
     });
   </script>
 
