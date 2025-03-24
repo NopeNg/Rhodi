@@ -109,7 +109,9 @@ class ProductDetailController extends Controller
             'size'         => $validatedData['size'],
             'color'        => $validatedData['color'],
             'cost'         => $validatedData['cost'],
+            'brand'       => $validatedData['brand'],
         ]);
+         
 
         // Xử lý upload ảnh nếu có
         if ($request->hasFile('images')) {
@@ -149,18 +151,37 @@ public function index($product_id)
         $product = Products::findOrFail($product_id);
 
         // Lấy bản ghi mới nhất theo product_code dựa trên imported_at
+        // $latestProductDetails = DB::table('product_detail as pd1')
+        //     ->join('image', 'pd1.product_code', '=', 'image.product_code')
+        //     ->join('products', 'pd1.product_id', '=', 'products.product_id')
+        //     ->where('pd1.product_id', $product_id)
+        //     ->whereRaw('pd1.imported_at = (
+        //         SELECT MAX(pd2.imported_at)
+        //         FROM product_detail as pd2
+        //         WHERE pd2.product_code = pd1.product_code
+        //     )')
+        //     ->select('pd1.*', 'image.image_url')
+        //     ->get();
+
+        //lấy tòan bộ sản phẩm
         $latestProductDetails = DB::table('product_detail as pd1')
             ->join('image', 'pd1.product_code', '=', 'image.product_code')
             ->join('products', 'pd1.product_id', '=', 'products.product_id')
             ->where('pd1.product_id', $product_id)
-            ->whereRaw('pd1.imported_at = (
-                SELECT MAX(pd2.imported_at)
-                FROM product_detail as pd2
-                WHERE pd2.product_code = pd1.product_code
-            )')
             ->select('pd1.*', 'image.image_url')
             ->get();
-
+        //    $latestProductDetails = DB::table('product_detail as pd1')
+        //     ->join('image', 'pd1.product_code', '=', 'image.product_code')
+        //     ->join('products', 'pd1.product_id', '=', 'products.product_id')
+        //     // ->where('pd1.product_id', $product_id)
+        //     // ->whereRaw('pd1.imported_at = (
+        //     //     SELECT MAX(pd2.imported_at)
+        //     //     FROM product_detail as pd2
+        //     //     WHERE pd2.product_code = pd1.product_code
+        //     // )')
+        //     ->select('pd1.*', 'image.image_url')
+        //     ->get();
+    
         return view('admin.product.productdetail', compact('product', 'latestProductDetails', 'product_id'));
     }
 
@@ -171,14 +192,6 @@ public function index($product_id)
      * @param int $id
      * @return \Illuminate\View\View
      */
-    public function show($id)
-    {
-        // Tìm sản phẩm theo ID
-        $product = ProductDetail::with('products', 'image')->findOrFail($id);
-
-        // Trả về view với chi tiết sản phẩm
-        return view('product_details.show', compact('product'));
-    }
 
 
 
