@@ -10,7 +10,8 @@ class ProductDetail extends Model {
 
     protected $table = 'product_detail';
     protected $primaryKey = 'product_detail_id';
-    public $timestamps = true;
+    public $timestamps = false;
+
 
     protected $fillable = ['product_id', 'product_code', 'name', 'description', 'brand', 'stock_quantity', 'size', 'color', 'cost', 'profit_margin', 'discount_rate', 'selling_price', 'status', 'imported_at'];
 

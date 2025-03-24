@@ -1,6 +1,6 @@
 <?php
 namespace App\Services;
-
+use Illuminate\Support\Str;
 class FormatService
 {
    
@@ -12,20 +12,41 @@ class FormatService
 
     // Hàm tạo mã sản phẩm
 
-    public function generateProductCode(string $name, string $brand, string $size, string $color): string
+    // public function generateProductCode(string $name, string $brand, string $size, string $color): string
+    // {
+    //     // Hàm slugify để loại bỏ dấu, khoảng trắng, ký tự đặc biệt
+    //     $slugify = function ($text) {
+    //         $text = strtolower($text);
+    //         $text = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $text); // bỏ dấu tiếng Việt
+    //         $text = preg_replace('/[^a-z0-9]/', '', $text); // chỉ giữ chữ và số
+    //         return $text;
+    //     };
+
+    //     return $slugify($name) . $slugify($brand) . $slugify($size) . $slugify($color);
+    // }
+
+
+
+      /**
+     * Tạo mã sản phẩm từ tên, thương hiệu, size, màu sắc
+     *
+     * @param string $name
+     * @param string $brand
+     * @param string $size
+     * @param string $color
+     * @return string
+     */
+    public function generateProductCode($name, $brand, $size, $color)
     {
-        // Hàm slugify để loại bỏ dấu, khoảng trắng, ký tự đặc biệt
-        $slugify = function ($text) {
-            $text = strtolower($text);
-            $text = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $text); // bỏ dấu tiếng Việt
-            $text = preg_replace('/[^a-z0-9]/', '', $text); // chỉ giữ chữ và số
-            return $text;
-        };
+        // Viết tắt 3 chữ cái đầu của tên và thương hiệu, xóa khoảng trắng
+        $namePart  = strtoupper(substr(preg_replace('/\s+/', '', $name), 0, 3));
+        $brandPart = strtoupper(substr(preg_replace('/\s+/', '', $brand), 0, 3));
+        $sizePart  = strtoupper(str_replace(' ', '', $size)); 
+        $colorPart = strtoupper(str_replace(' ', '', $color));
 
-        return $slugify($name) . $slugify($brand) . $slugify($size) . $slugify($color);
+        // Tạo mã sản phẩm: NAME-BRAND-SIZE-COLOR-RANDOM
+        return sprintf("%s-%s-%s-%s-%03d", $namePart, $brandPart, $sizePart, $colorPart, rand(100, 999));
     }
-
-
 }
 
 
