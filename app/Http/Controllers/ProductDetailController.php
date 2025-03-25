@@ -152,7 +152,7 @@ class ProductDetailController extends Controller
             ->join('products', 'pd1.product_id', '=', 'products.product_id')
             ->where('pd1.product_id', $product_id) // Chỉ lấy bản ghi cho sản phẩm cụ thể
             ->where('pd1.stock_quantity', '>', 0) // Chỉ lấy các bản ghi có stock_quantity > 0
-            ->where('status','!=','inactive')
+            ->where('pd1.status','=','available')
             ->select('pd1.*', 'image.image_url')
             ->get();
             
