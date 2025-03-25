@@ -126,7 +126,7 @@
           <th>Selling Price</th>
           <th>Status</th>
           <th>Image</th>
-          <th>Hành Động</th>
+          <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -145,6 +145,9 @@
         <td>{{ $pds->discount_rate }} %</td>
         <td>{{ $pds->selling_price }}</td>
         <td>{{ $pds->status }}</td>
+        <td>
+        <img src="{{ asset('storage/' . $pds->image_url) }}" alt="Product Image" width="80"class="rounded object-cover" />
+        </td>
         <td>
         <div class="dropdown dropdown-end">
         <button tabindex="0" class="btn btn-sm">Actions ⏷</button>
@@ -165,7 +168,7 @@
           @csrf
           @method('DELETE')
           <button type="submit" class="text-red-500 hover:text-red-700"
-          onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</button>
+          onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">🗑️ Delete</button>
           </form>
           </li>
         </ul>
