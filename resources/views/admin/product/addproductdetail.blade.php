@@ -138,15 +138,17 @@
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // Thiết lập lắng nghe sự kiện cho các trường
-                setupProductCodeGeneration('product_name', 'brand', 'size', 'color', 'product_code');
+                setupProductCodeGeneration('product_name', 'brand', 'size', 'color', 'product_code','stock_quantity');
             });
 
             function generateProductCode(productNameId, brandId, sizeId, colorId, outputId) {
                 // Lấy giá trị từ thẻ <p> và các trường nhập liệu
                 const productName = document.getElementById(productNameId).innerText; // Lấy giá trị từ thẻ <p>
-                const brand = document.getElementById(brandId).value;
-                const size = document.getElementById(sizeId).value;
-                const color = document.getElementById(colorId).value;
+                const brand = document.getElementById(brandId).value; // Lấy giá trị từ trường nhập
+                const size = document.getElementById(sizeId).value; // Lấy giá trị từ trường nhập
+                const color = document.getElementById(colorId).value; // Lấy giá trị từ trường nhập
+                const output = document.getElementById(outputId); // Lấy thẻ <p> để hiển thị mã
+                const stockQuantity = document.getElementById('stock_quantity').value;
 
                 // Chuyển đổi tên sản phẩm thành không dấu, viết thường và không có khoảng trắng
                 const slugify = (text) => {

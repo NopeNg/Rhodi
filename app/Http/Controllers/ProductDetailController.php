@@ -29,7 +29,7 @@ class ProductDetailController extends Controller
     // {
     //     // Gỡ lỗi: Kiểm tra tất cả dữ liệu yêu cầu
     //     dd($request->all());
-    
+
     //     // 1. Xác thực dữ liệu
     //     $request->validate([
     //         'name' => 'required|string|max:255',
@@ -43,10 +43,10 @@ class ProductDetailController extends Controller
     //         'product_code' => 'required|string|max:255', // Thêm xác thực cho product_code
     //         'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
     //     ]);
-    
+
     //     // 2. Tạo mã sản phẩm
     //     $productCode = $request->product_code; // Sử dụng product_code từ yêu cầu
-    
+
     //     // 3. Tạo chi tiết sản phẩm
     //     ProductDetail::create([
     //         'product_code' => $productCode,
@@ -57,18 +57,18 @@ class ProductDetailController extends Controller
     //         'selling_price' => $request->selling_price,
     //         'stock_quantity' => $request->stock_quantity,
     //     ]);
-    
+
     //     // 4. Lưu ảnh vào storage theo product_code
     //     if ($request->hasFile('images')) {
     //         foreach ($request->file('images') as $index => $imageFile) {
     //             $folder = 'images/' . $productCode; // Thư mục: storage/app/public/images/{product_code}
     //             $fileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
-    
+
     //             // Lưu file vào storage/app/public/images/{product_code}
     //             $imageFile->storeAs($folder, $fileName);
     //         }
     //     }
-    
+
     //     // 5. Chuyển hướng về trang chi tiết sản phẩm
     //     return redirect()->route('product.details.index', ['product_id' => $product->product_id])->with('success', 'Chi tiết sản phẩm đã được thêm thành công.');
     // }
@@ -82,15 +82,16 @@ class ProductDetailController extends Controller
     {
         // Xác thực dữ liệu đầu vào
         $validatedData = $request->validate([
-            'product_id' => 'required|integer|exists:products,product_id',// Sửa lại cột 'id'
-            'name'         => 'required|string|max:255',
-            'description'  => 'required|string',
-            'size'         => 'required|string',
-            'brand'        => 'required|string|max:255',
-            'color'        => 'required|string',
-            'cost'         => 'required|numeric',
+            'product_id' => 'required|integer|exists:products,product_id', // Sửa lại cột 'id'
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'size' => 'required|string',
+            'brand' => 'required|string|max:255',
+            'color' => 'required|string',
+            'cost' => 'required|numeric',
+            'stock_quantity' => 'required|integer|min:0', // Thêm xác thực cho stock_quantity
             'product_code' => 'nullable|string|max:255', // Cho phép nullable, nếu chưa có sẽ tạo mới
-            'images.*'     => 'image|mimes:jpg,jpeg,png|max:2048',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Tạo mã sản phẩm nếu chưa có
@@ -103,15 +104,16 @@ class ProductDetailController extends Controller
 
         // Lưu vào bảng product_detail
         $productDetail = ProductDetail::create([
-            'product_id'   => $validatedData['product_id'],
+            'product_id' => $validatedData['product_id'],
             'product_code' => $productCode,
-            'description'  => $validatedData['description'],
-            'size'         => $validatedData['size'],
-            'color'        => $validatedData['color'],
-            'cost'         => $validatedData['cost'],
-            'brand'       => $validatedData['brand'],
+            'name' => $validatedData['name'],
+            'description' => $validatedData['description'],
+            'brand' => $validatedData['brand'],
+            'size' => $validatedData['size'],
+            'color' => $validatedData['color'],
+            'cost' => $validatedData['cost'],
+            'stock_quantity' => $validatedData['stock_quantity'], // Thêm stock_quantity vào đây
         ]);
-         
 
         // Xử lý upload ảnh nếu có
         if ($request->hasFile('images')) {
@@ -125,7 +127,7 @@ class ProductDetailController extends Controller
                 // Lưu vào bảng images
                 Image::create([
                     'product_code' => $productCode,
-                    'image_url'    => Storage::url($imagePath),
+                    'image_url' => Storage::url($imagePath),
                 ]);
             }
         }
@@ -135,63 +137,33 @@ class ProductDetailController extends Controller
             ->with('success', 'Chi tiết sản phẩm đã được thêm thành công.');
     }
 
-    
-/**
- * Hiển thị danh sách chi tiết sản phẩm.
- *
- * @return \Illuminate\View\View
- */
+
+    /**
+     * Hiển thị danh sách chi tiết sản phẩm.
+     *
+     * @return \Illuminate\View\View
+     */
 
 
-
-public function index($product_id)
+    public function index($product_id)
     {
-        
-        // Lấy sản phẩm
-        $product = Products::findOrFail($product_id);
-
-        // Lấy bản ghi mới nhất theo product_code dựa trên imported_at
-        // $latestProductDetails = DB::table('product_detail as pd1')
-        //     ->join('image', 'pd1.product_code', '=', 'image.product_code')
-        //     ->join('products', 'pd1.product_id', '=', 'products.product_id')
-        //     ->where('pd1.product_id', $product_id)
-        //     ->whereRaw('pd1.imported_at = (
-        //         SELECT MAX(pd2.imported_at)
-        //         FROM product_detail as pd2
-        //         WHERE pd2.product_code = pd1.product_code
-        //     )')
-        //     ->select('pd1.*', 'image.image_url')
-        //     ->get();
-
-        //lấy tòan bộ sản phẩm
         $latestProductDetails = DB::table('product_detail as pd1')
-            ->join('image', 'pd1.product_code', '=', 'image.product_code')
+            ->leftJoin('image', 'pd1.product_code', '=', 'image.product_code') // Sử dụng LEFT JOIN
             ->join('products', 'pd1.product_id', '=', 'products.product_id')
-            ->where('pd1.product_id', $product_id)
+            ->where('pd1.product_id', $product_id) // Chỉ lấy bản ghi cho sản phẩm cụ thể
+            ->where('pd1.stock_quantity', '>', 0) // Chỉ lấy các bản ghi có stock_quantity > 0
             ->select('pd1.*', 'image.image_url')
             ->get();
-        //    $latestProductDetails = DB::table('product_detail as pd1')
-        //     ->join('image', 'pd1.product_code', '=', 'image.product_code')
-        //     ->join('products', 'pd1.product_id', '=', 'products.product_id')
-        //     // ->where('pd1.product_id', $product_id)
-        //     // ->whereRaw('pd1.imported_at = (
-        //     //     SELECT MAX(pd2.imported_at)
-        //     //     FROM product_detail as pd2
-        //     //     WHERE pd2.product_code = pd1.product_code
-        //     // )')
-        //     ->select('pd1.*', 'image.image_url')
-        //     ->get();
-    
-        return view('admin.product.productdetail', compact('product', 'latestProductDetails', 'product_id'));
+        return view('admin.product.productdetail', compact('latestProductDetails', 'product_id'));
     }
 
 
-    /**
-     * Hiển thị chi tiết của một sản phẩm.
-     *
-     * @param int $id
-     * @return \Illuminate\View\View
-     */
+    // /**
+    //  * Hiển thị chi tiết của một sản phẩm.
+    //  *
+    //  * @param int $id
+    //  * @return \Illuminate\View\View
+    //  */
 
 
 

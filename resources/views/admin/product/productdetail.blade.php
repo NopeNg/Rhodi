@@ -13,8 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
 
-  <body class="">
-
+  <body>
     <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
     <div id="sidebar" class="transition-all duration-300 w-[220px] overflow-hidden shadow-lg flex flex-col">
@@ -80,7 +79,7 @@
         <span class="text-sm font-medium flex-grow text-center"> 👤 heallll</span>
       </button>
       <div id="profile-menu" class="absolute bottom-16 left-4 w-48 rounded-md hidden shadow-lg z-20 bg-white">
-        <div class="p-3 border -b flex items-center gap-2">
+        <div class="p-3 border-b flex items-center gap-2">
         <span class="font-medium">haell</span>
         </div>
         <a href="profile" class="block px-4 py-2 hover:bg-gray-200">👤 Profile</a>
@@ -126,8 +125,7 @@
           <th>Discount Rate</th>
           <th>Selling Price</th>
           <th>Status</th>
-          <th>Imported At</th>
-          <th>Actions</th>
+          <th>Image</th>
           </tr>
         </thead>
         <tbody>
@@ -146,28 +144,8 @@
         <td>{{ $pds->discount_rate }} %</td>
         <td>{{ $pds->selling_price }}</td>
         <td>{{ $pds->status }}</td>
-        <td>{{ $pds->imported_at }}</td>
         <td>
-        <div class="relative inline-block text-left dropdown dropdown-end">
-        <button tabindex="0" class="btn btn-sm">Actions ⏷</button>
-        <ul tabindex="0"
-          class="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-purple-900 text-yellow-200">
-          <li>
-          <a href="#">✏️ Edit</a>
-          </li>
-          <li>
-          <a href="#">➕ Restock</a>
-          </li>
-          <li>
-          <form action="{{ route('products.destroy', $pds->product_id) }}" method="POST"
-          onsubmit="return confirm('Are you sure?');">
-          @csrf
-          @method('DELETE')
-          <button type="submit" class="text-red-500">🗑️ Delete</button>
-          </form>
-          </li>
-        </ul>
-        </div>
+        <img src="{{ $pds->image_url }}" alt="Image" style="width: 100px; height: auto;">
         </td>
         </tr>
       @endforeach
@@ -178,7 +156,7 @@
     </div>
     </div>
 
-    <!--JavaScript -->
+    <!-- JavaScript -->
     <script>
     const toggleBtn = document.getElementById('toggleSidebar');
     const sidebar = document.getElementById('sidebar');
@@ -193,17 +171,15 @@
     });
 
     profileBtn.addEventListener('click', () => {
-      profileMenu.classList.toggle('hidden');
+      profileMenu.classList.toggle(' hidden');
     });
 
-    // Click outside to hide profile menu
     window.addEventListener('click', (e) => {
       if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
       profileMenu.classList.add('hidden');
       }
     });
 
-    // Dropdown menu for actions
     document.querySelectorAll('[id^="menu-button-"]').forEach(button => {
       button.addEventListener('click', (event) => {
       const menu = event.currentTarget.nextElementSibling;
@@ -211,7 +187,6 @@
       });
     });
 
-    // Click outside to hide action menus
     window.addEventListener('click', (e) => {
       if (!e.target.closest('.relative')) {
       document.querySelectorAll('.absolute').forEach(menu => {
@@ -245,6 +220,8 @@
       });
     })();
     </script>
+
+  </body>
 
   </html>
 
