@@ -10,7 +10,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin Dashboard</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
   </head>
 
   <body class="">
@@ -177,29 +176,7 @@
     </div>
 
     <!-- JavaScript -->
-    <script>
-    const toggleBtn = document.getElementById('toggleSidebar');
-    const sidebar = document.getElementById('sidebar');
-    const profileBtn = document.getElementById('profile-btn');
-    const profileMenu = document.getElementById('profile-menu');
-
-    let isOpen = true;
-
-    toggleBtn.addEventListener('click', () => {
-      isOpen = !isOpen;
-      sidebar.style.width = isOpen ? '220px' : '0';
-    });
-
-    profileBtn.addEventListener('click', () => {
-      profileMenu.classList.toggle('hidden');
-    });
-
-    window.addEventListener('click', (e) => {
-      if (!profileBtn.contains(e.target) && !profileMenu.contains(e.target)) {
-      profileMenu.classList.add('hidden');
-      }
-    });
-    </script>
+  
   </body>
   <script id="script for theme">
     function setTheme(theme) {
@@ -229,3 +206,6 @@
 
   </html>
 @endsection
+
+
+
