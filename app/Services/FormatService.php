@@ -90,11 +90,6 @@ function setupProductCodeGeneration(productNameId, brandId, sizeId, colorId, out
 }
 
 
-// nhét cái này vào cuối trang để dùng
-{/* <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        setupProductCodeGeneration('product_name', 'brand', 'size', 'color', 'product_code');
-    });
-</script> */}
+
 
 </script>

@@ -80,7 +80,7 @@
       </button>
       <div id="profile-menu" class="absolute bottom-16 left-4 w-48 rounded-md hidden shadow-lg z-20 bg-white">
         <div class="p-3 border-b flex items-center gap-2">
-        <span class="font-medium">haell</span>
+        < span class="font-medium">haell</span>
         </div>
         <a href="profile" class="block px-4 py-2 hover:bg-gray-200">👤 Profile</a>
         <a href="logout" class="block px-4 py-2 text-red-500 hover:bg-gray-100">🚪 Logout</a>
@@ -126,6 +126,7 @@
           <th>Selling Price</th>
           <th>Status</th>
           <th>Image</th>
+          <th>Hành Động</th>
           </tr>
         </thead>
         <tbody>
@@ -145,7 +146,30 @@
         <td>{{ $pds->selling_price }}</td>
         <td>{{ $pds->status }}</td>
         <td>
-        <img src="{{ $pds->image_url }}" alt="Image" style="width: 100px; height: auto;">
+        <div class="dropdown dropdown-end">
+        <button tabindex="0" class="btn btn-sm">Actions ⏷</button>
+        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow rounded-box w-52 bg-gray-300">
+          <li>
+          <a href="">✏️ Edit</a>
+          </li>
+          <li>
+          <a href="">📋 Detail
+          List</a>
+          </li>
+          <li>
+          <a href="">➕ Add detail</a>
+          </li>
+          <li>
+          <form action="{{ route('product.details.destroy', $pds->product_detail_id) }}" method="POST"
+          style="display:inline;">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="text-red-500 hover:text-red-700"
+          onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">Xóa</button>
+          </form>
+          </li>
+        </ul>
+        </div>
         </td>
         </tr>
       @endforeach
@@ -171,7 +195,7 @@
     });
 
     profileBtn.addEventListener('click', () => {
-      profileMenu.classList.toggle(' hidden');
+      profileMenu.classList.toggle('hidden');
     });
 
     window.addEventListener('click', (e) => {

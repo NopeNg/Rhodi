@@ -152,8 +152,10 @@ class ProductDetailController extends Controller
             ->join('products', 'pd1.product_id', '=', 'products.product_id')
             ->where('pd1.product_id', $product_id) // Chỉ lấy bản ghi cho sản phẩm cụ thể
             ->where('pd1.stock_quantity', '>', 0) // Chỉ lấy các bản ghi có stock_quantity > 0
+            ->where('status','!=','inactive')
             ->select('pd1.*', 'image.image_url')
             ->get();
+            
         return view('admin.product.productdetail', compact('latestProductDetails', 'product_id'));
     }
 
@@ -176,5 +178,33 @@ class ProductDetailController extends Controller
         $productCode = strtolower($productNameSlug) . $brand . $size . $color;
 
         return $productCode;
+    }
+
+    public function destroy($id)
+    {
+        // Lấy product_code của sản phẩm cần xóa
+        $productDetail = ProductDetail::findOrFail($id);
+        $productCode = $productDetail->product_code;
+
+        // Bắt đầu giao dịch
+        DB::beginTransaction();
+
+        try {
+            // Xóa tất cả các hình ảnh liên quan
+            Image::where('product_code', $productCode)->delete();
+
+            // Sau đó xóa sản phẩm
+            $productDetail->delete();
+
+            // Cam kết giao dịch
+            DB::commit();
+
+            return redirect()->route('product.details.index')->with('success', 'Sản phẩm đã được xóa thành công.');
+        } catch (\Exception $e) {
+            // Nếu có lỗi xảy ra, hoàn tác giao dịch
+            DB::rollBack();
+
+            return redirect()->route('product.details.index')->with('error', 'Có lỗi xảy ra khi xóa sản phẩm: ' . $e->getMessage());
+        }
     }
 }
