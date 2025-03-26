@@ -132,13 +132,30 @@
 
                     <button type="submit" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded">Thêm Chi Tiết</button>
                 </form>
+                <!-- Hiển thị thông báo lỗi -->
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <!-- Hiển thị thông báo thành công -->
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
             </div>
         </div>
 
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 // Thiết lập lắng nghe sự kiện cho các trường
-                setupProductCodeGeneration('product_name', 'brand', 'size', 'color', 'product_code','stock_quantity');
+                setupProductCodeGeneration('product_name', 'brand', 'size', 'color', 'product_code', 'stock_quantity');
             });
 
             function generateProductCode(productNameId, brandId, sizeId, colorId, outputId) {
@@ -182,7 +199,7 @@
             document.addEventListener('DOMContentLoaded', function () {
                 setupProductCodeGeneration('product_name', 'brand', 'size', 'color', 'product_code');
             });
-        </script> 
+        </script>
     </body>
 
     </html>

@@ -19,3 +19,30 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+/* dùng cho carousel của productdetail */
+.carousel-container {
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* .carouselimg{
+  width: 300px;
+  height: 300px;
+} */
+
+.carousel-wrapper img {
+  width: 300px;
+  height: 300px;
+  object-fit: fill;
+  border-radius: 5px;
+}
+
+
+
+
+
+
+
+

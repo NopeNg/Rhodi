@@ -1,5 +1,7 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use App\Models\Category;
 use App\Models\Products;
 use Illuminate\Support\Str;
@@ -10,140 +12,88 @@ use App\Models\ProductDetail;
 use App\Models\Image;
 use Illuminate\Support\Facades\Storage;
 
-
 class ProductDetailController extends Controller
 {
-
-
     protected $format;
-    public function create($product_id)
-    {
-        // Lấy thông tin sản phẩm để hiển thị trong form
-        $product = Products::findOrFail($product_id);
-        $productCode = $this->generateProductCode($product->name, $product->brand, '', '');
-
-        return view('admin.product.addproductdetail', compact('product'));
-    }
-
-    // public function store(Request $request)
-    // {
-    //     // Gỡ lỗi: Kiểm tra tất cả dữ liệu yêu cầu
-    //     dd($request->all());
-
-    //     // 1. Xác thực dữ liệu
-    //     $request->validate([
-    //         'name' => 'required|string|max:255',
-    //         'description' => 'required|string',
-    //         'size' => 'required|string',
-    //         'brand' => 'required|string|max:255',
-    //         'color' => 'required|string',
-    //         'cost' => 'required|numeric',
-    //         'selling_price' => 'required|numeric',
-    //         'stock_quantity' => 'required|integer',
-    //         'product_code' => 'required|string|max:255', // Thêm xác thực cho product_code
-    //         'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
-    //     ]);
-
-    //     // 2. Tạo mã sản phẩm
-    //     $productCode = $request->product_code; // Sử dụng product_code từ yêu cầu
-
-    //     // 3. Tạo chi tiết sản phẩm
-    //     ProductDetail::create([
-    //         'product_code' => $productCode,
-    //         'description' => $request->description,
-    //         'size' => $request->size,
-    //         'color' => $request->color,
-    //         'cost' => $request->cost,
-    //         'selling_price' => $request->selling_price,
-    //         'stock_quantity' => $request->stock_quantity,
-    //     ]);
-
-    //     // 4. Lưu ảnh vào storage theo product_code
-    //     if ($request->hasFile('images')) {
-    //         foreach ($request->file('images') as $index => $imageFile) {
-    //             $folder = 'images/' . $productCode; // Thư mục: storage/app/public/images/{product_code}
-    //             $fileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
-
-    //             // Lưu file vào storage/app/public/images/{product_code}
-    //             $imageFile->storeAs($folder, $fileName);
-    //         }
-    //     }
-
-    //     // 5. Chuyển hướng về trang chi tiết sản phẩm
-    //     return redirect()->route('product.details.index', ['product_id' => $product->product_id])->with('success', 'Chi tiết sản phẩm đã được thêm thành công.');
-    // }
 
     public function __construct(FormatService $format)
     {
         $this->format = $format;
     }
 
+    public function create($product_id)
+    {
+        // Lấy thông tin sản phẩm để hiển thị trong form
+        $product = Products::findOrFail($product_id);
+        return view('admin.product.addproductdetail', compact('product'));
+    }
+
     public function store(Request $request)
     {
         // Xác thực dữ liệu đầu vào
         $validatedData = $request->validate([
-            'product_id' => 'required|integer|exists:products,product_id', // Sửa lại cột 'id'
+            'product_id' => 'required|integer|exists:products,product_id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'size' => 'required|string',
             'brand' => 'required|string|max:255',
             'color' => 'required|string',
             'cost' => 'required|numeric',
-            'stock_quantity' => 'required|integer|min:0', // Thêm xác thực cho stock_quantity
-            'product_code' => 'nullable|string|max:255', // Cho phép nullable, nếu chưa có sẽ tạo mới
-            'images.*' => 'image|mimes:jpg,jpeg,png|max:2048',
+            'stock_quantity' => 'required|integer|min:0',
+            'images.*' => 'image|mimes:jpg,jpeg,png|max:524288', // 512 MB
         ]);
 
-        // Tạo mã sản phẩm nếu chưa có
-        $productCode = $validatedData['product_code'] ?? $this->format->generateProductCode(
-            $validatedData['name'],
-            $validatedData['brand'],
-            $validatedData['size'],
-            $validatedData['color']
-        );
+        try {
+            // Tạo mã sản phẩm
+            $productCode = $this->generateProductCode($validatedData['name'], $validatedData['brand'], $validatedData['size'], $validatedData['color']);
 
-        // Lưu vào bảng product_detail
-        $productDetail = ProductDetail::create([
-            'product_id' => $validatedData['product_id'],
-            'product_code' => $productCode,
-            'name' => $validatedData['name'],
-            'description' => $validatedData['description'],
-            'brand' => $validatedData['brand'],
-            'size' => $validatedData['size'],
-            'color' => $validatedData['color'],
-            'cost' => $validatedData['cost'],
-            'stock_quantity' => $validatedData['stock_quantity'], // Thêm stock_quantity vào đây
-        ]);
+            // Lưu vào bảng product_detail
+            $productDetail = ProductDetail::create([
+                'product_id' => $validatedData['product_id'],
+                'name' => $validatedData['name'],
+                'description' => $validatedData['description'],
+                'brand' => $validatedData['brand'],
+                'size' => $validatedData['size'],
+                'color' => $validatedData['color'],
+                'cost' => $validatedData['cost'],
+                'stock_quantity' => $validatedData['stock_quantity'],
+                'product_code' => $productCode, // Lưu product_code vào đây
+            ]);
 
-        // Xử lý upload ảnh nếu có
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $imageFile) {
-                $folder = 'images/' . $productCode;
-                $fileName = uniqid() . '.' . $imageFile->getClientOriginalExtension();
+            // Xử lý upload ảnh nếu có
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $imageFile) {
+                    // Tạo đường dẫn file
+                    $fileName = $imageFile->getClientOriginalName(); // Lấy tên file gốc
+                    $filePath = 'product_images/' . $fileName; // Đường dẫn lưu file
 
-                // Lưu vào storage/app/public/images/{product_code}
-                $imagePath = $imageFile->storeAs($folder, $fileName, 'public');
+                    // Kiểm tra xem file đã tồn tại chưa
+                    if (Storage::disk('public')->exists($filePath)) {
+                        // Xóa file cũ nếu tồn tại
+                        Storage::disk('public')->delete($filePath);
+                    }
 
-                // Lưu vào bảng images
-                Image::create([
-                    'product_code' => $productCode,
-                    'image_url' => Storage::url($imagePath),
-                ]);
+                    // Lưu file mới
+                    $imagePath = $imageFile->storeAs('product_images', $fileName, 'public');
+
+                    // Lưu vào bảng images
+                    Image::create([
+                        'product_detail_id' => $productDetail->id, // Lưu ID của product_detail
+                        'product_code' => $productCode, // Lưu product_code
+                        'image_url' => $imagePath, // Lưu đường dẫn hình ảnh
+                    ]);
+                }
             }
+
+            // Chuyển hướng với thông báo thành công
+            return redirect()->route('product.details.index', ['product_id' => $validatedData['product_id']])
+                ->with('success', 'Chi tiết sản phẩm đã được thêm thành công.');
+        } catch (\Exception $e) {
+            // Ghi lại lỗi và trả về thông báo lỗi
+            \Log::error('Lỗi khi lưu chi tiết sản phẩm: ' . $e->getMessage());
+            return redirect()->back()->withErrors(['msg' => 'Có lỗi xảy ra: ' . $e->getMessage()]);
         }
-
-        // Chuyển hướng với thông báo thành công
-        return redirect()->route('product.details.index', ['product_id' => $validatedData['product_id']])
-            ->with('success', 'Chi tiết sản phẩm đã được thêm thành công.');
     }
-
-
-    /**
-     * Hiển thị danh sách chi tiết sản phẩm.
-     *
-     * @return \Illuminate\View\View
-     */
-
 
     public function index($product_id)
     {
@@ -151,23 +101,14 @@ class ProductDetailController extends Controller
             ->leftJoin('image', 'pd1.product_code', '=', 'image.product_code') // Sử dụng LEFT JOIN
             ->join('products', 'pd1.product_id', '=', 'products.product_id')
             ->where('pd1.product_id', $product_id) // Chỉ lấy bản ghi cho sản phẩm cụ thể
-            ->where('pd1.stock_quantity', '>', 0) // Chỉ lấy các bản ghi có stock_quantity > 0
-            ->where('pd1.status','=','available')
             ->select('pd1.*', 'image.image_url')
             ->get();
-            
-        return view('admin.product.productdetail', compact('latestProductDetails', 'product_id'));
+
+        $groupedProductDetails = $latestProductDetails->groupBy('product_detail_id');
+
+
+        return view('admin.product.productdetail', compact('product_id', 'groupedProductDetails'));
     }
-
-
-    // /**
-    //  * Hiển thị chi tiết của một sản phẩm.
-    //  *
-    //  * @param int $id
-    //  * @return \Illuminate\View\View
-    //  */
-
-
 
     private function generateProductCode($productName, $brand, $size, $color)
     {
@@ -175,36 +116,95 @@ class ProductDetailController extends Controller
         $productNameSlug = Str::slug($productName, ''); // Sử dụng Str::slug để loại bỏ dấu và khoảng trắng
 
         // Tạo mã sản phẩm theo công thức
-        $productCode = strtolower($productNameSlug) . $brand . $size . $color;
-
-        return $productCode;
+        return strtolower($productNameSlug) . $brand . $size . $color;
     }
 
-    public function destroy($id)
+    public function updateStatus(Request $request, $id)
     {
-        // Lấy product_code của sản phẩm cần xóa
+        // Xác thực dữ liệu
+        $request->validate([
+            'status' => 'required|string|in:discontinued,available', // Chỉ cho phép các trạng thái cụ thể
+        ]);
+
+        // Lấy chi tiết sản phẩm
         $productDetail = ProductDetail::findOrFail($id);
-        $productCode = $productDetail->product_code;
 
-        // Bắt đầu giao dịch
-        DB::beginTransaction();
+        // Cập nhật trạng thái
+        $productDetail->status = $request->status;
 
-        try {
-            // Xóa tất cả các hình ảnh liên quan
-            Image::where('product_code', $productCode)->delete();
+        // Lưu thay đổi
+        $productDetail->save();
 
-            // Sau đó xóa sản phẩm
-            $productDetail->delete();
+        // Chuyển hướng với thông báo thành công
+        return redirect()->route('product.details.index', ['product_id' => $productDetail->product_id])
+            ->with('success', 'Trạng thái sản phẩm đã được cập nhật thành công.');
+    }
 
-            // Cam kết giao dịch
-            DB::commit();
+    public function edit($product_detail_id)
+    {
+        // Lấy chi tiết sản phẩm từ cơ sở dữ liệu
+        $productDetail = ProductDetail::findOrFail($product_detail_id);
 
-            return redirect()->route('product.details.index')->with('success', 'Sản phẩm đã được xóa thành công.');
-        } catch (\Exception $e) {
-            // Nếu có lỗi xảy ra, hoàn tác giao dịch
-            DB::rollBack();
+        // Trả về view với dữ liệu
+        return view('admin.product.editproductdetail', compact('productDetail'));
+    }
 
-            return redirect()->route('product.details.index')->with('error', 'Có lỗi xảy ra khi xóa sản phẩm: ' . $e->getMessage());
+    public function update(Request $request, $product_detail_id)
+    {
+        // Xác thực dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'size' => 'nullable|string|max:50',
+            'brand' => 'nullable|string|max:100',
+            'color' => 'nullable|string|max:50',
+            'cost' => 'nullable|numeric',
+            'stock_quantity' => 'nullable|integer',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:524288',
+        ]);
+    
+        // Lấy chi tiết sản phẩm từ cơ sở dữ liệu
+        $productDetail = ProductDetail::findOrFail($product_detail_id);
+    
+        // Cập nhật thông tin sản phẩm, giữ giá trị cũ nếu trường bị bỏ trống
+        $productDetail->name = $validatedData['name'] ?? $productDetail->name;
+        $productDetail->description = $validatedData['description'] ?? $productDetail->description;
+        $productDetail->size = $validatedData['size'] ?? $productDetail->size;
+        $productDetail->brand = $validatedData['brand'] ?? $productDetail->brand;
+        $productDetail->color = $validatedData['color'] ?? $productDetail->color;
+        $productDetail->cost = $validatedData['cost'] ?? $productDetail->cost;
+        $productDetail->stock_quantity = $validatedData['stock_quantity'] ?? $productDetail->stock_quantity;
+    
+        // Xử lý hình ảnh nếu có
+        if ($request->hasFile('images')) {
+            // Lấy tất cả hình ảnh cũ từ cơ sở dữ liệu
+            $oldImages = Image::where('product_code', $productDetail->product_code)->get();
+    
+            // Xóa hình ảnh cũ trong storage
+            foreach ($oldImages as $oldImage) {
+                Storage::disk('public')->delete($oldImage->image_url);
+            }
+    
+            // Xóa hình ảnh cũ trong cơ sở dữ liệu
+            Image::where('product_code', $productDetail->product_code)->delete();
+    
+            // Lưu hình ảnh mới
+            foreach ($request->file('images') as $imageFile) {
+                $imagePath = $imageFile->store('product_images', 'public'); // Lưu hình ảnh
+    
+                // Lưu vào bảng images
+                Image::create([
+                    'product_code' => $productDetail->product_code, // Lưu product_code
+                    'image_url' => $imagePath, // Lưu đường dẫn hình ảnh
+                ]);
+            }
         }
+    
+        // Lưu thay đổi
+        $productDetail->save();
+    
+        // Chuyển hướng với thông báo thành công
+        return redirect()->route('product.details.index', ['product_id' => $productDetail->product_id])
+            ->with('success', 'Cập nhật chi tiết sản phẩm thành công!');
     }
 }

@@ -79,9 +79,8 @@ Route::post('/admin/product/{product_id}/details', [ProductDetailController::cla
 Route::get('/admin/product/details/{detail_id}/edit', [ProductDetailController::class, 'edit'])->name('product.details.edit');
 Route::put('/admin/product/details/{detail_id}', [ProductDetailController::class, 'update'])->name('product.details.update');
 
-// Route cho xóa chi tiết sản phẩm
-Route::delete('/admin/product/details/{detail_id}', [ProductDetailController::class, 'destroy'])->name('product.details.destroy');
-
+// Route cho disable chi tiết sản phẩm
+Route::patch('/product/details/update-status/{id}', [ProductDetailController::class, 'updateStatus'])->name('product.details.update.status');
 // Route cho thêm chi tiết sản phẩm
 // Route cho thêm chi tiết sản phẩm
 Route::get('/admin/product/{product_id}/details/create', [ProductDetailController::class, 'create'])->name('product.details.create');
@@ -91,3 +90,13 @@ Route::post('/admin/product/{product_id}/details', [ProductDetailController::cla
 Route::get('/employee', function () {
     return view('/employee/index.blade.php');
 });
+
+//trang info php không dùng trong demo chỉ dùng khi dev
+Route::get('/info', function () {
+    return view('/info');
+});
+
+
+//trang edit detail sp
+Route::get('/admin/product/details/{product_detail_id}/edit', [ProductDetailController::class, 'edit'])->name('product.details.edit');
+Route::put('/admin/product/details/{product_detail_id}', [ProductDetailController::class, 'update'])->name('product.details.update');

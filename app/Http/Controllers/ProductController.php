@@ -101,13 +101,13 @@ class ProductController extends Controller
             'main_image' => null, // Tạm thời null
         ]);
     
-        // Bước 2: Nếu có ảnh thì lưu vào thư mục theo ID
+        // Bước 2: Nếu có ảnh thì lưu vào thư mục thumbnail
         if ($request->hasFile('main_image')) {
             // Tạo tên tệp duy nhất cho hình ảnh
             $filename = time() . '_' . $request->file('main_image')->getClientOriginalName();
             
-            // Lưu hình ảnh vào thư mục public/images/{product_id}
-            $path = $request->file('main_image')->storeAs("images/{$product->id}", $filename, 'public');
+            // Lưu hình ảnh vào thư mục public/thumbnail
+            $path = $request->file('main_image')->storeAs('thumbnail', $filename, 'public');
     
             // Cập nhật lại đường dẫn ảnh trong cơ sở dữ liệu
             $product->update([
