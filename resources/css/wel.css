@@ -15,19 +15,20 @@
 
   /* Css cho nội dung */
   .mainn {
-    height: 390vh;
+
     /* background-color: blue; */
     padding-top: 1%;
     padding-bottom: 5%;
+
     
   }
 
   /* Css cho footer */
   .ft {
     height: 30vh;
-    color: black;
-    background-color: aqua;
-    display: flex;
+    color: #e0d7c6    ;
+    background-color: rgb(20, 19, 19);
+    display: flex;    
     justify-content: center;
     /* Căn giữa theo chiều ngang */
 

@@ -10,6 +10,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/3', function () {
+    return view('cusproduct');
+});
 // Route cho các trang admin
 Route::get('/1', function () {
     return view('productdetail');

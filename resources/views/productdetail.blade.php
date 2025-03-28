@@ -14,267 +14,207 @@
 
 <body class="">
   <!-- Đây là đầu trang  -->
-  <header class="hd static h-[10vh] w-[99vw]">
 
-
-
-
-    <div class="navbar color-primary-content h-[10vh] w-[100vw] fixed"
-      style="background-color: #e0d7c6; z-index: 2;pt-">
-      <div class="navbar-start">
-        
-
-        <img src="https://pos.nvncdn.com/e41e16-5527/store/20240820_jRhCzjIO.jpg" alt="Đây là logo" width="100vh"
-          height="110vh">
-
-      </div>
-
-
-      <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1">
-          <li><a>TRANG CHỦ</a></li>
-
-          <li>
-            <div class="dropdown dropdown-hover relative">
-              <label tabindex="0" class="cursor-pointer">QUẦN</label>
-              <ul tabindex="0"
-                class="dropdown-content menu bg-base-100 shadow rounded-box mt-2 w-40 left-1/2 -translate-x-1/2">
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-              </ul>
-            </div>
-          </li>
-
-
-          <li>
-            <div class="dropdown dropdown-hover relative">
-              <label tabindex="0" class="cursor-pointer">ÁO</label>
-              <ul tabindex="0"
-                class="dropdown-content menu bg-base-100 shadow rounded-box mt-2 w-40 left-1/2 -translate-x-1/2">
-
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li>
-            <div class="dropdown dropdown-hover relative">
-              <label tabindex="0" class="cursor-pointer">PHỤ KIỆN</label>
-              <ul tabindex="0"
-                class="dropdown-content menu bg-base-100 shadow rounded-box mt-2 w-40 left-1/2 -translate-x-1/2">
-
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li>
-            <div class="dropdown dropdown-hover relative">
-              <label tabindex="0" class="cursor-pointer">QUÀ TẶNG</label>
-              <ul tabindex="0"
-                class="dropdown-content menu bg-base-100 shadow rounded-box mt-2 w-40 left-1/2 -translate-x-1/2">
-
-                <li><a>Item 1</a></li>
-                <li><a>Item 2</a></li>
-              </ul>
-            </div>
-          </li>
-
-          <li><a>BEST SELLER</a></li>
-          <li><a>HÀNG MỚI VỀ</a></li>
-          <li><a>XU HƯỚNG</a></li>
-          <li><a>LIÊN HỆ</a></li>
-
-          
-        </ul>
-      </div>
-
-
-      <div class="navbar-end">
-        <div class="flex-none">
-
-
-
-
-          <div class="dropdown dropdown-end dropdown-hover">
-  <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
-    <div class="indicator">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-        stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-        </svg>
-      <span class="badge badge-xs badge-primary indicator-item">11</span>
-    </div>
-  </div>
-  <div tabindex="0"
-  class="card card-compact dropdown-content bg-black z-10 mt-3 shadow p-4 w-auto min-w-[17rem] max-w-[26rem] max-h-[20vh] overflow-y-auto break-words">
-  <span class="text-lg font-bold text-white">8 Items</span>
-    <span class="text-info">Subtotal: $999</span>
-    <p class="text-white">
-      Đây là một đoạn nội dung dài ví dụ để kiểm tra xem dropdown có tự động giãn ra và xuống dòng đúng không.
-      Đây là một đoạn nội dung dài ví dụ để kiểm tra xem dropdown có tự động giãn ra và xuống dòng đúng không.
-      Đây là một đoạn nội dung dài ví dụ để kiểm tra xem dropdown có tự động giãn ra và xuống dòng đúng không.
-      Đây là một đoạn nội dung dài ví dụ để kiểm tra xem dropdown có tự động giãn ra và xuống dòng đúng không.
-      Đây là một đoạn nội dung dài ví dụ để kiểm tra xem dropdown có tự động giãn ra và xuống dòng đúng không.
-    </p>
-    <button class="btn bg-black btn-block mt-2">View cart</button>
-  </div>
-</div>
-
-
-          <div class="dropdown dropdown-end dropdown-hover">
-            <div tabindex="0" role="button" class="btn btn-ghost btn-circle bg-white">
-              <div class="indicator">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 " fill="none" viewBox="0 0 24 24"
-                  stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-
-                <span class="badge badge-sm indicator-item">8</span>
-              </div>
-            </div>
-
-            <div tabindex="0" class="card card-compact dropdown-content bg-black z-1 mt-3 w-52 shadow ">
-              <div class="card-body ">
-                <span class="text-lg font-bold">8 Items</span>
-                <span class="text-info">Subtotal: $999</span>
-                <div class="card-actions">
-                  <button class="btn bg-black btn-block">View cart</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="dropdown dropdown-end dropdown-hover">
-            <div tabindex="0" role="button" class="btn btn-ghost  btn-circle avatar">
-              <div class="w-10 rounded-full">
-                <img alt="Tailwind CSS Navbar component"
-                  src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
-              </div>
-            </div>
-            <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-              <li>
-                <a class="justify-between">
-                  Profile
-                  <span class="badge">New</span>
-                </a>
-              </li>
-              <li><a>Settings</a></li>
-              <li><a>Logout</a></li>
-            </ul>
-          </div>
-        </div>
-
-
-      </div>
-
-    </div>
-
-  </header>
+  <x-weltopbar />
 
   <!-- Đây là nơi chứa toàn bộ nội dung -->
   <main class="mainn">
+    <div class="container mx-auto p-5 shadow bg-gray-100">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <!-- Image Section -->
+        <!-- <div>
+                <img id="mainImage" src="https://th.bing.com/th/id/OIP.-6dsPHgctIItd41AWS0pcgHaHa?rs=1&pid=ImgDetMain" alt="Main Product Image" class="rounded-lg shadow-lg w-full">
+                <div class="flex gap-2 mt-4">
+                    <img onclick="changeImage(this)" src="https://mtv.vn/uploads/2023/02/25/meo-dd.jpg" class="w-20 h-20 rounded-lg cursor-pointer hover:opacity-75">
+                    <img onclick="changeImage(this)" src="https://mtv.vn/uploads/2023/02/25/meo-dd.jpg" class="w-20 h-20 rounded-lg cursor-pointer hover:opacity-75">
+                    <img onclick="changeImage(this)" src="https://th.bing.com/th/id/OIP.-6dsPHgctIItd41AWS0pcgHaHa?rs=1&pid=ImgDetMain" class="w-20 h-20 rounded-lg cursor-pointer hover:opacity-75">
+                </div>
+            </div> -->
 
+        <div class="md:w-full ">
+          <div class="relative">
+            <img id="mainImage" src="https://mtv.vn/uploads/2023/02/25/meo-dd.jpg" alt="Product"
+              class="w-4/5 mx-auto rounded-lg transition-all duration-300 ">
 
+          </div>
+          <div class="flex justify-center space-x-2 mt-2 relative">
+            <img onclick="changeImage(this)"
+              src="https://th.bing.com/th/id/OIP.-6dsPHgctIItd41AWS0pcgHaHa?rs=1&pid=ImgDetMain"
+              class="w-20 h-20 cursor-pointer rounded-lg border border-gray-300">
+            <img onclick="changeImage(this)" src="https://mtv.vn/uploads/2023/02/25/meo-dd.jpg"
+              class="w-20 h-20 cursor-pointer rounded-lg border border-gray-300">
+            <img onclick="changeImage(this)" src="https://mtv.vn/uploads/2023/02/25/meo-dd.jpg"
+              class="w-20 h-20 cursor-pointer rounded-lg border border-gray-300">
+            <img onclick="changeImage(this)"
+              src="https://th.bing.com/th/id/OIP.-6dsPHgctIItd41AWS0pcgHaHa?rs=1&pid=ImgDetMain"
+              class="w-20 h-20 cursor-pointer rounded-lg border border-gray-300">
+            <button id="prevBtn"
+              class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white px-2 py-1 rounded-md">❮</button>
+            <button id="nextBtn"
+              class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-gray-700 text-white px-2 py-1 rounded-md">❯</button>
+          </div>
 
-  <!DOCTYPE html>
-<html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chi tiết sản phẩm</title>
-    <link href="https://cdn.jsdelivr.net/npm/daisyui@latest/dist/full.css" rel="stylesheet" />
-    <script src="https://cdn.tailwindcss.com"></script>
-  </head>
-  <body class="bg-gray-100">
-
-    <div class="max-w-6xl mx-auto py-10 px-4">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-10 bg-white p-6 rounded-xl shadow-lg">
-        
-        <!-- Ảnh sản phẩm -->
+        </div>
+        <!-- Product Details -->
         <div>
-          <img src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp" alt="Sản phẩm" class="rounded-lg w-full object-cover" />
+          <h1 class="text-3xl font-bold">Basic Tee</h1>
+          <p class="text-xl text-gray-600">$35</p>
+          <div class="mt-2">⭐⭐⭐⭐⭐</div>
+          <div class="mt-4">
+            <h2 class="font-semibold">Color</h2>
+            <div class="flex gap-2 mt-2">
+              <button class="w-8 h-8 bg-black rounded-full border-2 border-gray-400"></button>
+              <button class="w-8 h-8 bg-gray-600 rounded-full border-2 border-gray-400"></button>
+              <button class="w-8 h-8 bg-blue-500 rounded-full border-2 border-gray-400"></button>
+            </div>
+          </div>
+          <div class="mt-4">
+            <h2 class="font-semibold">Size</h2>
+            <div class="flex gap-2 mt-2">
+              <button class="btn btn-outline">XS</button>
+              <button class="btn btn-outline btn-active">S</button>
+              <button class="btn btn-outline">M</button>
+              <button class="btn btn-outline">L</button>
+              <button class="btn btn-outline">XL</button>
+            </div>
+          </div>
+          <button class="btn btn-primary mt-4 w-full">Add to cart</button>
         </div>
 
-        <!-- Thông tin sản phẩm -->
-        <div class="space-y-5">
-          <h1 class="text-4xl font-bold text-gray-800">Áo Hoodie Unisex</h1>
-          <p class="text-gray-600 text-lg">
-            Áo hoodie chất vải nỉ dày, mềm mịn, giữ ấm cực tốt. Thiết kế form rộng, unisex, phù hợp cả nam và nữ.
+   
+      </div>
+
+      <hr class="border-t border-gray-600 my-2 ">
+
+      <div class="container mx-auto p-4 w-260">
+        <!-- Chi tiết sản phẩm -->
+        <div class="card bg-base-100 shadow-md p-4 ">
+          <h2 class="text-xl font-bold border-b pb-2">CHI TIẾT SẢN PHẨM</h2>
+          <div class="mt-2 space-y-2">
+            <div class="flex justify-between border-b pb-1">
+              <span class="font-semibold">Danh Mục</span>
+              <span class="text-blue-600">Shopee > Phụ Kiện & Trang Sức Nữ > Mũ</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span class="font-semibold">Số lượng hàng khuyến mãi</span>
+              <span>5</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span class="font-semibold">Số sản phẩm còn lại</span>
+              <span>42</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span class="font-semibold">Chất liệu</span>
+              <span>Len</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span class="font-semibold">Xuất xứ</span>
+              <span>Trung Quốc</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span class="font-semibold">Giới tính</span>
+              <span>Unisex</span>
+            </div>
+            <div class="flex justify-between border-b pb-1">
+              <span class="font-semibold">Kiểu nón</span>
+              <span>Mũ len</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="font-semibold">Gửi từ</span>
+              <span>Hà Nội</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Mô tả sản phẩm -->
+        <div class="card bg-base-100 shadow-md p-4 mt-6">
+          <h2 class="text-lg font-semibold border-b pb-2">MÔ TẢ SẢN PHẨM</h2>
+          <p class="mt-4 text-gray-700">Mũ len WANXI studio dệt kim dày dặn thời trang mùa thu đông dễ phối đồ.</p>
+          <ul class="list-disc pl-5 mt-2 text-gray-700">
+            <li>Chất len dày dặn ấm áp cho mùa đông.</li>
+            <li>Bản loại 1 chất sẽ dày dặn, hạn chế xù vải và lên form đẹp hơn bản loại 2.</li>
+            <li>Đủ màu như ảnh: be - nâu - ghi - đen.</li>
+          </ul>
+          <p class="mt-4 text-gray-700 text-sm">* Vì điều kiện ánh sáng khác nhau nên màu sắc sản phẩm có thể chênh lệch
+            so với ảnh nhưng chất lượng vẫn đảm bảo.
+
           </p>
-          <p class="text-2xl font-semibold text-red-500">450.000₫</p>
-
-          <!-- Chọn size -->
-          <div>
-            <label class="block mb-2 font-semibold">Chọn size:</label>
-            <select class="select select-bordered w-full max-w-xs">
-              <option>S</option>
-              <option>M</option>
-              <option>L</option>
-              <option>XL</option>
-            </select>
-          </div>
-
-          <!-- Hành động -->
-          <div class="flex gap-4 mt-4">
-            <button class="btn btn-primary">Thêm vào giỏ</button>
-            <button class="btn btn-outline">Mua ngay</button>
-          </div>
         </div>
       </div>
+
+
     </div>
-
-  </body>
-</html>
-
-
-</main>
-
-
- 
-  <!-- Đây là cuối trang -->
-  <footer class="ft footer sm:footer-horizontal  ">
- 
-
-
-    <nav>
-      <h6 class="footer-title">Services</h6>
-      <a class="link link-hover">Branding</a>
-      <a class="link link-hover">Design</a>
-      <a class="link link-hover">Marketing</a>
-      <a class="link link-hover">Advertisement</a>
-    </nav>
-    <nav>
-      <h6 class="footer-title">Company</h6>
-      <a class="link link-hover">About us</a>
-      <a class="link link-hover">Contact</a>
-      <a class="link link-hover">Jobs</a>
-      <a class="link link-hover">Press kit</a>
-    </nav>
-    <nav>
-      <h6 class="footer-title">Legal</h6>
-      <a class="link link-hover">Terms of use</a>
-      <a class="link link-hover">Privacy policy</a>
-      <a class="link link-hover">Cookie policy</a>
-    </nav>
-    <form>
-      <h6 class="footer-title">Newsletter</h6>
-      <fieldset class="w-80">
-        <label>Enter your email address</label>
-        <div class="join">
-          <input type="text" placeholder="username@site.com" class="input input-bordered join-item" />
-          <button class="btn btn-primary join-item">Subscribe</button>
-        </div>
-      </fieldset>
-    </form>
-
-  </footer>
-
+    </div>
+    </div>
+  </main>
 </body>
+<script>
+  let images = [
+    "https://th.bing.com/th/id/OIP.-6dsPHgctIItd41AWS0pcgHaHa?rs=1&pid=ImgDetMain",
+    "https://mtv.vn/uploads/2023/02/25/meo-dd.jpg",
+    "https://th.bing.com/th/id/OIP.-6dsPHgctIItd41AWS0pcgHaHa?rs=1&pid=ImgDetMain",
+    "https://mtv.vn/uploads/2023/02/25/meo-dd.jpg"
+  ];
+  let currentIndex = 0;
+
+  function changeImage(element) {
+    document.getElementById('mainImage').src = element.src;
+  }
+
+  document.getElementById('prevBtn').addEventListener('click', function () {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    document.getElementById('mainImage').src = images[currentIndex];
+  });
+
+  document.getElementById('nextBtn').addEventListener('click', function () {
+    currentIndex = (currentIndex + 1) % images.length;
+    document.getElementById('mainImage').src = images[currentIndex];
+  });
+</script>
+
+
+
+
+
+
+<!-- Đây là cuối trang -->
+<footer class="ft footer sm:footer-horizontal  ">
+
+
+
+  <nav>
+    <h6 class="footer-title">Services</h6>
+    <a class="link link-hover">Branding</a>
+    <a class="link link-hover">Design</a>
+    <a class="link link-hover">Marketing</a>
+    <a class="link link-hover">Advertisement</a>
+  </nav>
+  <nav>
+    <h6 class="footer-title">Company</h6>
+    <a class="link link-hover">About us</a>
+    <a class="link link-hover">Contact</a>
+    <a class="link link-hover">Jobs</a>
+    <a class="link link-hover">Press kit</a>
+  </nav>
+  <nav>
+    <h6 class="footer-title">Legal</h6>
+    <a class="link link-hover">Terms of use</a>
+    <a class="link link-hover">Privacy policy</a>
+    <a class="link link-hover">Cookie policy</a>
+  </nav>
+  <form>
+    <h6 class="footer-title">Newsletter</h6>
+    <fieldset class="w-80">
+      <label>Enter your email address</label>
+      <div class="join">
+        <input type="text" placeholder="username@site.com" class="input input-bordered join-item" />
+        <button class="btn btn-primary join-item">Subscribe</button>
+      </div>
+    </fieldset>
+  </form>
+
+</footer>
 
 
 
