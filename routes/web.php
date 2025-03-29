@@ -22,7 +22,7 @@ Route::get('/2', function () {
     return view('admin.index');
 });
 
-Route::get('/admin-emp-all', function () {
+Route::get('/admin-employees', function () {
     return view('admin/employees/employeeall');
 });
 
@@ -54,7 +54,7 @@ Route::get('/admin/product/{product_id}/details', [ProductDetailController::clas
     ->name('product.details.index');
 
 // Route cho quản lý khách hàng
-Route::get('/admin-customer-manage', function () {
+Route::get('/admin-customer', function () {
     return view('admin/customer/manage');
 });
 
@@ -103,3 +103,11 @@ Route::get('/info', function () {
 //trang edit detail sp
 Route::get('/admin/product/details/{product_detail_id}/edit', [ProductDetailController::class, 'edit'])->name('product.details.edit');
 Route::put('/admin/product/details/{product_detail_id}', [ProductDetailController::class, 'update'])->name('product.details.update');
+
+
+//trang giỏ hàng 
+use App\Http\Controllers\CartController;
+
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::patch('/cart/update/{rowId}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/destroy/{rowId}', [CartController::class, 'destroy'])->name('cart.destroy');

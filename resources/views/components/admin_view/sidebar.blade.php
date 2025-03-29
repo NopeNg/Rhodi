@@ -16,54 +16,20 @@
         <h1 class="text-xl font-bold p-4">Admin Panel</h1>
         <ul class="menu flex-grow space-y-2 px-4">
             <li><a href="/2" class="flex items-center gap-2">🏠 Dashboard</a></li>
-            <li>
-                <details class="group">
-                    <summary class="flex items-center gap-2 cursor-pointer">👨‍💼 Employees</summary>
-                    <ul class="ml-4 space-y-1 hidden group-open:block">
-                        <li><a href="admin-emp-all">Manage Employees</a></li>
-                        <li><a href="admin-emp-add">Add Employee</a></li>
-                        <li><a href="admin-emp-tracking">Employee Tracking</a></li>
-                    </ul>
-                </details>
-            </li>
-            <li>
-                <details class="group">
-                    <summary class="flex items-center gap-2 cursor-pointer">👨 Users</summary>
-                    <ul class="ml-4 space-y-1 hidden group-open:block">
-                        <li><a href="admin-customer-manage">Manage Users</a></li>
-                        <li><a href="admin-customer-add">Add User</a></li>
-                    </ul>
-                </details>
-            </li>
-            <li>
-                <details class="group">
-                    <summary class="flex items-center gap-2 cursor-pointer">💎 Products</summary>
-                    <ul class="ml-4 space-y-1 hidden group-open:block">
-                        <li><a href="admin-product">Manage Products</a></li>
-                        <li><a href="admin-product-approve">Add Product</a></li>
-                    </ul>
-                </details>
-            </li>
+            <li><a href="admin-employees">👨‍💼 Employees</a></li>
+            <li><a href="admin-customer">👨 Users </a></li>
+            <li><a href="/products">💎 Products</a></li>
             <li><a class="flex items-center gap-2">📊 Reports</a></li>
             <li>
                 <details class="group">
                     <summary tabindex="0" class="flex items-center gap-2 cursor-pointer"> 🎨 Theme </summary>
-                    <ul tabindex="0" class="ml-4 space-y-1 hidden group-open:block">
+                    <ul tabindex="0" class=" mt-4 ml-1 space-y-1 hidden group-open:block">
                         <li><input type="radio" name="theme-dropdown"
                                 class="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
                                 aria-label="Light" value="light" /></li>
                         <li><input type="radio" name="theme-dropdown"
                                 class="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
                                 aria-label="Dark" value="dark" /></li>
-                        <li><input type="radio" name="theme-dropdown"
-                                class="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Cyberpunk" value="cyberpunk" /></li>
-                        <li><input type="radio" name="theme-dropdown"
-                                class="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Valentine" value="valentine" /></li>
-                        <li><input type="radio" name="theme-dropdown"
-                                class="theme-controller w-full btn btn-sm btn-block btn-ghost justify-start"
-                                aria-label="Aqua" value="aqua" /></li>
                     </ul>
                 </details>
             </li>
@@ -84,7 +50,7 @@
         </div>
     </div>
 
-    <!-- nội dung nhét vào đây -->m
+    <!-- nội dung nhét vào đây -->
 </body>
 
 <script>
@@ -112,5 +78,6 @@
         });
     })();
 </script>
+
 
 </html>

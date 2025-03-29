@@ -65,17 +65,24 @@ class ProductDetailController extends Controller
                 foreach ($request->file('images') as $imageFile) {
                     // Tạo đường dẫn file
                     $fileName = $imageFile->getClientOriginalName(); // Lấy tên file gốc
-                    $filePath = 'product_images/' . $fileName; // Đường dẫn lưu file
-
+                    $productFolder = 'detail_images/' . $productCode; // Tạo folder con với tên là product_id
+                    $filePath = $productFolder . '/' . $fileName; // Đường dẫn lưu file
+            
+                    // Kiểm tra xem folder con đã tồn tại chưa
+                    if (!Storage::disk('public')->exists($productFolder)) {
+                        // Tạo folder con nếu chưa tồn tại
+                        Storage::disk('public')->makeDirectory($productFolder);
+                    }
+            
                     // Kiểm tra xem file đã tồn tại chưa
                     if (Storage::disk('public')->exists($filePath)) {
                         // Xóa file cũ nếu tồn tại
                         Storage::disk('public')->delete($filePath);
                     }
-
+            
                     // Lưu file mới
-                    $imagePath = $imageFile->storeAs('product_images', $fileName, 'public');
-
+                    $imagePath = $imageFile->storeAs($productFolder, $fileName, 'public');
+            
                     // Lưu vào bảng images
                     Image::create([
                         'product_detail_id' => $productDetail->id, // Lưu ID của product_detail
@@ -186,11 +193,11 @@ class ProductDetailController extends Controller
             }
     
             // Xóa hình ảnh cũ trong cơ sở dữ liệu
-            Image::where('product_code', $productDetail->product_code)->delete();
+            Image::where('product_code/'.$product_detail_id.'',$productDetail->product_code)->delete();
     
             // Lưu hình ảnh mới
             foreach ($request->file('images') as $imageFile) {
-                $imagePath = $imageFile->store('product_images', 'public'); // Lưu hình ảnh
+                $imagePath = $imageFile->store('product_images/', 'public'); // Lưu hình ảnh
     
                 // Lưu vào bảng images
                 Image::create([
