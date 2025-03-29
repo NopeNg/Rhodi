@@ -67,22 +67,22 @@ class ProductDetailController extends Controller
                     $fileName = $imageFile->getClientOriginalName(); // Lấy tên file gốc
                     $productFolder = 'detail_images/' . $productCode; // Tạo folder con với tên là product_id
                     $filePath = $productFolder . '/' . $fileName; // Đường dẫn lưu file
-            
+
                     // Kiểm tra xem folder con đã tồn tại chưa
                     if (!Storage::disk('public')->exists($productFolder)) {
                         // Tạo folder con nếu chưa tồn tại
                         Storage::disk('public')->makeDirectory($productFolder);
                     }
-            
+
                     // Kiểm tra xem file đã tồn tại chưa
                     if (Storage::disk('public')->exists($filePath)) {
                         // Xóa file cũ nếu tồn tại
                         Storage::disk('public')->delete($filePath);
                     }
-            
+
                     // Lưu file mới
                     $imagePath = $imageFile->storeAs($productFolder, $fileName, 'public');
-            
+
                     // Lưu vào bảng images
                     Image::create([
                         'product_detail_id' => $productDetail->id, // Lưu ID của product_detail
@@ -169,10 +169,10 @@ class ProductDetailController extends Controller
             'stock_quantity' => 'nullable|integer',
             'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:524288',
         ]);
-    
+
         // Lấy chi tiết sản phẩm từ cơ sở dữ liệu
         $productDetail = ProductDetail::findOrFail($product_detail_id);
-    
+
         // Cập nhật thông tin sản phẩm, giữ giá trị cũ nếu trường bị bỏ trống
         $productDetail->name = $validatedData['name'] ?? $productDetail->name;
         $productDetail->description = $validatedData['description'] ?? $productDetail->description;
@@ -181,24 +181,24 @@ class ProductDetailController extends Controller
         $productDetail->color = $validatedData['color'] ?? $productDetail->color;
         $productDetail->cost = $validatedData['cost'] ?? $productDetail->cost;
         $productDetail->stock_quantity = $validatedData['stock_quantity'] ?? $productDetail->stock_quantity;
-    
+
         // Xử lý hình ảnh nếu có
         if ($request->hasFile('images')) {
             // Lấy tất cả hình ảnh cũ từ cơ sở dữ liệu
             $oldImages = Image::where('product_code', $productDetail->product_code)->get();
-    
+
             // Xóa hình ảnh cũ trong storage
             foreach ($oldImages as $oldImage) {
                 Storage::disk('public')->delete($oldImage->image_url);
             }
-    
+
             // Xóa hình ảnh cũ trong cơ sở dữ liệu
-            Image::where('product_code/'.$product_detail_id.'',$productDetail->product_code)->delete();
-    
+            Image::where('product_code', $productDetail->product_code)->delete(); // Sửa ở đây
+
             // Lưu hình ảnh mới
             foreach ($request->file('images') as $imageFile) {
                 $imagePath = $imageFile->store('product_images/', 'public'); // Lưu hình ảnh
-    
+
                 // Lưu vào bảng images
                 Image::create([
                     'product_code' => $productDetail->product_code, // Lưu product_code
@@ -206,10 +206,10 @@ class ProductDetailController extends Controller
                 ]);
             }
         }
-    
+
         // Lưu thay đổi
         $productDetail->save();
-    
+
         // Chuyển hướng với thông báo thành công
         return redirect()->route('product.details.index', ['product_id' => $productDetail->product_id])
             ->with('success', 'Cập nhật chi tiết sản phẩm thành công!');
