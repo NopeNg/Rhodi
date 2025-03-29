@@ -44,7 +44,7 @@
                 <div class="p-3 border-b flex items-center gap-2">
                     <span class="font-medium">haell</span>
                 </div>
-                <a href="profile" class="block px-4 py-2 hover:bg-gray-200">👤 Profile</a>
+                <a href="/login" class="block px-4 py-2 hover:bg-gray-200">👤 Profile</a>
                 <a href="logout" class="block px-4 py-2 text-red -500 hover:bg-gray-100">🚪 Logout</a>
             </div>
         </div>

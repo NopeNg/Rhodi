@@ -167,7 +167,7 @@ class ProductDetailController extends Controller
             'color' => 'nullable|string|max:50',
             'cost' => 'nullable|numeric',
             'stock_quantity' => 'nullable|integer',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:524288',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:8388608',
         ]);
 
         // Lấy chi tiết sản phẩm từ cơ sở dữ liệu
@@ -194,11 +194,19 @@ class ProductDetailController extends Controller
 
             // Xóa hình ảnh cũ trong cơ sở dữ liệu
             Image::where('product_code', $productDetail->product_code)->delete(); // Sửa ở đây
+<<<<<<< HEAD
 
             // Lưu hình ảnh mới
             foreach ($request->file('images') as $imageFile) {
                 $imagePath = $imageFile->store('product_images/', 'public'); // Lưu hình ảnh
 
+=======
+    
+            // Lưu hình ảnh mới
+            foreach ($request->file('images') as $imageFile) {
+                $imagePath = $imageFile->store('product_images', 'public'); // Lưu hình ảnh
+    
+>>>>>>> 64ebb62 (Nội dung cập nhật)
                 // Lưu vào bảng images
                 Image::create([
                     'product_code' => $productDetail->product_code, // Lưu product_code

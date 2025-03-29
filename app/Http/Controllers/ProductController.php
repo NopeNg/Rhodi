@@ -21,19 +21,14 @@ class ProductController extends Controller
     
     public function index()
     {
-        
         $products = DB::table('products')
             ->join('category', 'products.category_id', '=', 'category.category_id')
             ->select('products.*', 'category.category_name', 'category.category_detail_name')
             ->get();
-
-
             $products->transform(function ($detail) {
                 $detail->price = $this->format->currencyVN($detail->price);
                 return $detail;
             });
-    
-
         return view('admin.product.product', compact('products'));
     }
 

@@ -17,27 +17,32 @@
       <!-- Topbar -->
       <x-admin_view.topbar/>
       <!-- Page Content -->
-      <main class="p-6 flex-1 overflow-y-auto">
-        <!-- name of each tab group should be unique -->
-        <div class="tabs tabs-box">
-          <input id="tab1" type ="radio" name="my_tabs_6" class="tab" aria-label="Tab 1" checked="checked" />
-          <div class="tab-content bg-base-100 border-base-300 p-6">
-            <h1>Biểu Đồ</h1>
-            <div style="width: 83%; margin: auto;">
-              <canvas id="myChart"></canvas>
+      <main class="mainn hidden-on-scroll z-10 ">
+        <section class="bg-white text-black relative w-full overflow-hidden pt-2 hidden-on-scroll">
+            <h2 class="text-4xl font-bold text-center text-gray-800">Các sản phẩm bán chạy</h2>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-6">
+                @if($products->isEmpty())
+                    <p class="text-center">Không có sản phẩm nào để hiển thị.</p>
+                @else
+                    @foreach($products as $product)
+                        <div class="card bg-base-100 w-[20vw] shadow-sm">
+                            <figure>
+                                <img src="{{ $product->main_image }}" alt="{{ $product->name }}" />
+                            </figure>
+                            <div class="card-body">
+                                <h2 class="card-title">{{ $product->name }}</h2>
+                                <p>{{ $product->description ?? 'Mô tả không có' }}</p>
+                                <div class="card-actions justify-end">
+                                    <button class="btn btn-primary">Mua ngay</button>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
-          </div>
-          <input id="tab2" type="radio" name="my_tabs_6" class="tab" aria-label="Tab 2" />
-          <div class="tab-content bg-base-100 border-base-300 p-6">
-            <h1>Báo Cáo Doanh Thu</h1>
-            <div style="width: 83%; margin: auto;">
-              <canvas id="revenueChart"></canvas>
-            </div>
-          </div>
-          <input id="tab3" type="radio" name="my_tabs_6" class="tab" aria-label="Tab 3" />
-          <div class="tab-content bg-base-100 border-base-300 p-6">Tab content 3</div>
-        </div>
-      </main>
+        </section>
+    </main>
     </div>
   </div>
   <script>

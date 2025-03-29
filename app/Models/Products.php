@@ -10,7 +10,7 @@ class Products extends Model {
 
     protected $table = 'products'; // Tên bảng
     protected $primaryKey = 'product_id'; // Khóa chính
-    public $timestamps = false; // Sử dụng timestamps (có thể thay đổi thành false nếu không cần)
+    public $timestamps = false; // Sử dụng timestamps
 
     // Các cột có thể được gán hàng loạt
     protected $fillable = [
@@ -21,7 +21,17 @@ class Products extends Model {
         'main_image',
         'total_quantity'
     ];
-    
+
+    // Các trường cần ẩn khi chuyển đổi thành mảng hoặc JSON
+    protected $hidden = [
+        // 'password', // Nếu có trường nhạy cảm
+    ];
+
+    // Các trường cần chuyển đổi kiểu dữ liệu
+    protected $casts = [
+        'price' => 'decimal:2',
+        'total_quantity' => 'integer',
+    ];
 
     // Quan hệ với model Category
     public function category() {

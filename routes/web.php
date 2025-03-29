@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\CusProController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+require __DIR__ . '/auth.php';
 
 // Route cho trang chính
 Route::get('/', function () {
@@ -18,10 +20,14 @@ Route::get('/1', function () {
     return view('productdetail');
 });
 
+Route::get('/productde/{product_id}', [CusProController::class, 'show'])->name('product.show'); // Hiển thị chi tiết sản phẩm
+
+
 Route::get('/2', function () {
     return view('admin.index');
 });
 
+// Route cho quản lý nhân viên
 Route::get('/admin-employees', function () {
     return view('admin/employees/employeeall');
 });
@@ -40,10 +46,6 @@ Route::get('/admin-order', function () {
 
 Route::get('/admin-order-detail', function () {
     return view('admin/order/orderdetail');
-});
-
-Route::get('/admin-product-approve', function () {
-    return view('admin/product/approve');
 });
 
 // Route cho sản phẩm
@@ -108,7 +110,9 @@ Route::put('/admin/product/details/{product_detail_id}', [ProductDetailControlle
 //trang giỏ hàng 
 use App\Http\Controllers\CartController;
 
+
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::patch('/cart/update/{rowId}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/destroy/{rowId}', [CartController::class, 'destroy'])->name('cart.destroy');
+
 

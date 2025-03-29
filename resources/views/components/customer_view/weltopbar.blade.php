@@ -98,7 +98,8 @@
                         </div>
                     </div>
 
-                    <div style="background-color:rgb(107, 39, 39);" tabindex="0" class="card card-compact dropdown-content z-1 mt-3 w-52 shadow ">
+                    <div style="background-color:rgb(107, 39, 39);" tabindex="0"
+                        class="card card-compact dropdown-content z-1 mt-3 w-52 shadow ">
                         <div class="card-body ">
                             <span class="text-lg font-bold">8 Items</span>
                             <span class="text-info">Subtotal: $999</span>
@@ -125,7 +126,12 @@
                             </a>
                         </li>
                         <li><a>Settings</a></li>
-                        <li><a>Logout</a></li>
+                        <li><a>
+                                <form action="{{ route('logout') }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-danger">Đăng Xuất</button>
+                                </form>
+                            </a></li>
                     </ul>
                 </div>
             </div>
