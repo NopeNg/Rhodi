@@ -112,4 +112,4 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::patch('/cart/update/{rowId}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/destroy/{rowId}', [CartController::class, 'destroy'])->name('cart.destroy');
 
-hahaah
+hahaahádasd
