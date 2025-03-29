@@ -19,7 +19,8 @@
         <div class="md:w-full">
           <div class="relative">
             @if($cusprodet[0]->image_url)
-              <img id="mainImage" src="{{ asset('storage/' . $cusprodet[0]->image_url) }}" alt="Product Image" class="rounded shadow-lg w-180 h-180">
+              <img id="mainImage" src="{{ asset('storage/' . $cusprodet[0]->image_url) }}" alt="Product Image" class="rounded shadow-lg w-180 h-18git rebase --continue
+0">
             @else
               <span>No Image Available</span>
             @endif
@@ -131,7 +132,7 @@
     currentIndex = (currentIndex - 1 + images.length) % images.length; // Quay vòng về cuối nếu vượt qua đầu
     mainImage.src = images[currentIndex];
   });
-
+ga
   // Xử lý sự kiện khi nhấn nút Next
   document.getElementById('nextBtn').addEventListener('click', () => {
     currentIndex = (currentIndex + 1) % images.length; // Quay vòng về đầu nếu vượt qua cuối
