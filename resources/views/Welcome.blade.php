@@ -13,7 +13,8 @@
 
 <body class="">
   <!-- Đây là đầu trang  -->
-  <x-weltopbar />
+   <x-weltopbar/>
+
 
 
   <!-- Đây là nơi chứa toàn bộ nội dung -->

@@ -36,17 +36,22 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //kiểm tra
+        // Kiểm tra dữ liệu đầu vào
         $request->validate([
             'category_name' => 'required|string|max:100',
             'category_detail_name' => 'required|string|max:255',
         ]);
 
+        // Chuyển đổi category_name thành chữ hoa
+        $request->merge([
+            'category_name' => mb_strtoupper($request->category_name, 'UTF-8'),
+        ]);
+
+        // Lưu danh mục mới vào cơ sở dữ liệu
         Category::create($request->all());
 
         return redirect()->route('admin.categories.index')
             ->with('success', 'Thêm mới thành công');
-
     }
 
     /**
@@ -72,14 +77,23 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $category_id)
     {
-        //kiểm tra 
+        // Kiểm tra dữ liệu đầu vào
         $request->validate([
             'category_name' => 'required|string|max:100',
             'category_detail_name' => 'required|string|max:255',
         ]);
-        //lấy dữ liệu từ for
+
+        // Chuyển đổi category_name thành chữ hoa
+        $request->merge([
+            'category_name' => mb_strtoupper($request->category_name, 'UTF-8'),
+        ]);
+
+        // Lấy dữ liệu từ form
         $category = Category::findOrFail($category_id);
+
+        // Cập nhật danh mục
         $category->update($request->all());
+
         return redirect()->route('admin.categories.index')
             ->with('success', 'Cập nhật thành công');
     }

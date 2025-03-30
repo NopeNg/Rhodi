@@ -115,7 +115,6 @@
           <th>Category Name</th>
           <th>Category Detail Name</th>
           <th>Total quantity</th>
-          <th>Price</th>
           <th>Main image</th>
           <th>Status</th>
           <th>Actions</th>
@@ -129,8 +128,7 @@
         <td>{{ $product->category_id }}</td>
         <td>{{ $product->category_name }}</td>
         <td>{{ $product->category_detail_name }}</td>
-        <th>{{ $product->total_quantity }}</th>
-        <td>{{ $product->price }}</td>
+ 
         <td>
         @if($product->main_image)
       <img src="{{ asset('storage/' . $product->main_image) }}" alt="Product Image" width="80"

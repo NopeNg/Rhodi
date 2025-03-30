@@ -26,7 +26,6 @@ class ProductController extends Controller
             ->select('products.*', 'category.category_name', 'category.category_detail_name')
             ->get();
             $products->transform(function ($detail) {
-                $detail->price = $this->format->currencyVN($detail->price);
                 return $detail;
             });
         return view('admin.product.product', compact('products'));
@@ -80,8 +79,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:category,category_id',
-            'total_quantity' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0',
+         
             'status' => 'required|in:active,inactive',
             'main_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:102400',
         ]);
@@ -90,8 +88,7 @@ class ProductController extends Controller
         $product = Products::create([
             'name' => $request->name,
             'category_id' => $request->category_id,
-            'total_quantity' => $request->total_quantity,
-            'price' => $request->price,
+        
             'status' => $request->status,
             'main_image' => null, // Tạm thời null
         ]);
@@ -126,8 +123,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'category_id' => 'required|integer|exists:category,category_id',
-            'total_quantity' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0',
+         
             'status' => 'required|in:active,inactive',
             'main_image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
@@ -143,8 +139,7 @@ class ProductController extends Controller
         $product->update([
             'name' => $request->name,
             'category_id' => $request->category_id,
-            'total_quantity' => $request->total_quantity,
-            'price' => $request->price,
+         
             'status' => $request->status,
             'main_image' => $mainImagePath,
         ]);

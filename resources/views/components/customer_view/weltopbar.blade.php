@@ -1,3 +1,4 @@
+@vite(['resources/css/app.css', 'resources/js/app.js', 'resources/css/wel.css'])
 <header class="hd static h-[10vh] w-[99vw]">
 
 
@@ -18,31 +19,24 @@
             <ul class="menu menu-horizontal px-1">
                 <li><a href="/">TRANG CHỦ</a></li>
 
-                <li>
-                    <div class="dropdown dropdown-hover relative">
-                        <label tabindex="0" class="cursor-pointer">QUẦN</label>
+                @foreach($groupedCategories as $categoryName => $details)
+                    <li class="dropdown dropdown-hover relative">
+                        <label tabindex="0"
+                            class="cursor-pointer px-4 py-2 rounded-lg text-gray-700 !hover:bg-transparent hover:text-blue-500 transition-none">
+                            {{ $categoryName }}
+                        </label>
                         <ul tabindex="0"
-                            class="dropdown-content menu bg-base-100 shadow rounded-box mt-2 w-40 left-1/2 -translate-x-1/2">
-                            <li><a>Quần dài</a></li>
-                            <li><a>Quần ngắn</a></li>
+                            class="dropdown-content menu bg-base-100 rounded-box mt-2 w-40 left-1/2 -translate-x-1/2 border border-gray-200 shadow-none">
+                            @foreach($details as $detail)
+                                <li class="mb-2">
+                                    <a href="{{ route('category.products', $detail->category_id) }}">
+                                        {{ $detail->category_detail_name }}
+                                    </a>
+                                </li>
+                            @endforeach
                         </ul>
-                    </div>
-                </li>
-
-
-                <li>
-                    <div class="dropdown dropdown-hover relative">
-                        <label tabindex="0" class="cursor-pointer">ÁO</label>
-                        <ul tabindex="0"
-                            class="dropdown-content menu bg-base-100 shadow rounded-box mt-2 w-40 left-1/2 -translate-x-1/2">
-
-                            <li><a>Áo phông</a></li>
-                            <li><a>Áo khoác</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a>PHỤ KIỆN</a></li>
-                <li><a>BEST SELLER</a></li>
+                    </li>
+                @endforeach
             </ul>
         </div>
 

@@ -12,9 +12,17 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+
 Route::get('/3', function () {
     return view('cusproduct');
 });
+
+Route::get('/5',function(){
+    return  view('\customer\show');
+});
+
+
 // Route cho các trang admin
 Route::get('/1', function () {
     return view('productdetail');
@@ -115,4 +123,23 @@ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::patch('/cart/update/{rowId}', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/destroy/{rowId}', [CartController::class, 'destroy'])->name('cart.destroy');
 
+
+// Route cho trang chính hiển thị sản phẩm
+Route::get('/', [CusProController::class, 'index'])->name('home');
+
+// Route cho hiển thị chi tiết sản phẩm
+Route::get('/product/{product_id}', [CusProController::class, 'show'])->name('product.show');
+
+// Route cho hiển thị sản phẩm theo category_id
+Route::get('/category/{category_id}', [CusProController::class, 'showc'])->name('category.show');
+
+// Route cho hiển thị sản phẩm theo category_id (có thể dùng cho một view khác)
+Route::get('/products/category/{category_id}', [CusProController::class, 'showProductsByCategory'])->name('products.byCategory');
+
+// Route cho lấy danh sách thể loại (có thể không cần thiết nếu bạn đã tích hợp vào view khác)
+Route::get('/categories', [CusProController::class, 'getCategories'])->name('categories.index');
+
+
+
+Route::get('/category/{id}', [CusProController::class, 'showProductsByCategory'])->name('category.products');
 
