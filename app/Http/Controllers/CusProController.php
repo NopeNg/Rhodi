@@ -47,7 +47,6 @@ class CusProController extends Controller
                 'product_detail.product_code',
                 'product_detail.name as product_detail_name',
                 'category.*',
-                'product_detail.brand',
                 'product_detail.description',
                 'product_detail.size',
                 'product_detail.color',
@@ -75,32 +74,42 @@ class CusProController extends Controller
     {
         $prdt = DB::table('products')
             ->join('category', 'products.category_id', '=', 'category.category_id')
-            ->join('product_detail', 'products.product_id', '=', 'product_detail.product_id')
             ->join('brand', 'products.brand_id', '=', 'brand.brand_id')
             ->select(
                 'category.*',
-                'products.*',
+                'products.pname as name',
                 'brand.*',
-                'product_detail.*'
             )
             ->where('products.status', 'active') // Điều kiện trạng thái "active"
             ->where('products.category_id', $category_id) // Lấy sản phẩm theo chi tiết thể loại sản phẩm
+            ->distinct() // Chỉ lấy các dòng khác nhau
             ->get();
 
+                // Tính tổng stock_quantity
+    $totalStock = DB::table('products')
+    ->join('product_detail', 'products.product_id', '=', 'product_detail.product_id')
+    ->where('products.status', 'active')
+    ->where('products.category_id', $category_id)
+    ->sum('product_detail.stock_quantity');
+    // dd($totalStock);
+           
+    // dd($prdt);
+
         return view('customer.show', [
-            'products' => $prdt,
-            'category_id' => $category_id // Truyền category_id vào view nếu cần
+            'prdt' => $prdt,
+            'category_id' => $category_id ,// Truyền category_id vào view nếu cần
+            'totalStock' => $totalStock // Truyền tổng số lượng vào view
         ]);
     }
 
     // Hiển thị sản phẩm theo category_id
-    public function showProductsByCategory($category_id)
-    {
-        $category = Category::findOrFail($category_id);
-        $products = Products::where('category_id', $category_id)->get();
+    // public function showProductsByCategory($category_id)
+    // {
+    //     $category = Category::findOrFail($category_id);
+    //     $products = Products::where('category_id', $category_id)->get();
 
-        return view('products.index', compact('category', 'products'));
-    }
+    //     return view('cusproduct', compact('category', 'products'));
+    // }
 
     // Lấy danh sách thể loại cho dropdown
     public function getCategories()

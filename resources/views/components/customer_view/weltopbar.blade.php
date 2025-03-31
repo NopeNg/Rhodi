@@ -40,7 +40,6 @@
             </ul>
         </div>
 
-dddđađá
 
         <div class="navbar-end">
             <div class="flex-none">

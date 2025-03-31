@@ -127,6 +127,7 @@ Route::delete('/cart/destroy/{rowId}', [CartController::class, 'destroy'])->name
 // Route cho trang chính hiển thị sản phẩm
 Route::get('/', [CusProController::class, 'index'])->name('home');
 
+
 // Route cho hiển thị chi tiết sản phẩm
 Route::get('/product/{product_id}', [CusProController::class, 'show'])->name('product.show');
 
@@ -141,5 +142,5 @@ Route::get('/categories', [CusProController::class, 'getCategories'])->name('cat
 
 
 
-Route::get('/category/{id}', [CusProController::class, 'showProductsByCategory'])->name('category.products');
+Route::get('/category/{id}', action: [CusProController::class, 'showProductsByCategory'])->name('category.products');
 

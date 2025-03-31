@@ -130,13 +130,12 @@
                                 <td class="border">{{ $pds->product_id }}</td>
                                 <td class="border">{{ $pds->product_code }}</td>
                                 <td class="border">{{ $pds->description }}</td>
-                                <td class="border">{{ $pds->brand }}</td>
                                 <td class="border">{{ $pds->stock_quantity }}</td>
                                 <td class="border">{{ $pds->size }}</td>
                                 <td class="border">{{ $pds->color }}</td>
                                 <td class="border">{{ $pds->cost }}</td>
                                 <td class="border">{{ $pds->profit_margin }} %</td>
-                                <td class="border">{{ $pds->discount_rate }} %</td>
+                        
                                 <td class="border">{{ $pds->selling_price }}</td>
                                 <td class="border">{{ $pds->status }}</td>
                                 <td  class="border">

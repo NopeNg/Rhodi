@@ -38,6 +38,7 @@
         <!-- Phần chi tiết sản phẩm -->
         <div>
           <h1 class="text-3xl font-bold">{{ $cusprodet[0]->product_detail_name }}</h1>
+        
           <p class="text-xl text-gray-600">${{ $cusprodet[0]->selling_price }}</p>
           <div class="mt-2">⭐⭐⭐⭐⭐</div>
 
@@ -74,7 +75,7 @@
             </div>
             <div class="flex justify-between border-b pb-1">
               <span class="font-semibold">Số sản phẩm còn lại</span>
-              <span>{{ $cusprodet[0]->total_quantity }}</span>
+
             </div>
             <!-- Thêm các thuộc tính sản phẩm khác... -->
           </div>

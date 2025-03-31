@@ -36,7 +36,7 @@ class ProductDetailController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'size' => 'required|string',
-            'brand' => 'required|string|max:255',
+          
             'color' => 'required|string',
             'cost' => 'required|numeric',
             'stock_quantity' => 'required|integer|min:0',
@@ -163,7 +163,6 @@ class ProductDetailController extends Controller
             'name' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'size' => 'nullable|string|max:50',
-            'brand' => 'nullable|string|max:100',
             'color' => 'nullable|string|max:50',
             'cost' => 'nullable|numeric',
             'stock_quantity' => 'nullable|integer',
@@ -177,7 +176,7 @@ class ProductDetailController extends Controller
         $productDetail->name = $validatedData['name'] ?? $productDetail->name;
         $productDetail->description = $validatedData['description'] ?? $productDetail->description;
         $productDetail->size = $validatedData['size'] ?? $productDetail->size;
-        $productDetail->brand = $validatedData['brand'] ?? $productDetail->brand;
+        // $productDetail->brand = $validatedData['brand'] ?? $productDetail->brand;
         $productDetail->color = $validatedData['color'] ?? $productDetail->color;
         $productDetail->cost = $validatedData['cost'] ?? $productDetail->cost;
         $productDetail->stock_quantity = $validatedData['stock_quantity'] ?? $productDetail->stock_quantity;
