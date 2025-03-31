@@ -1,0 +1,231 @@
+CREATE DATABASE rhodi;
+USE rhodi;
+
+-- Bảng role (vai trò nhân viên)
+CREATE TABLE role (
+    level INT PRIMARY KEY UNIQUE,
+    role_name VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Bảng employee (nhân viên)
+CREATE TABLE employee (
+    employee_id INT PRIMARY KEY AUTO_INCREMENT,
+    code VARCHAR(50) NOT NULL UNIQUE,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    birth DATE,
+    level INT,
+    hire_date DATE,
+    password VARCHAR(255),
+    FOREIGN KEY (level) REFERENCES role(level)
+);
+
+-- Bảng customer (khách hàng)
+CREATE TABLE customer (
+    customer_id INT PRIMARY KEY AUTO_INCREMENT,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    address TEXT,
+    password VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Bảng category (danh mục sản phẩm)
+CREATE TABLE category (
+    category_id INT PRIMARY KEY AUTO_INCREMENT,
+    category_name VARCHAR(100) NOT NULL,
+    category_detail_name VARCHAR(100)
+);
+
+-- Bảng brand (thương hiệu sản phẩm)
+CREATE TABLE brand (
+    brand_id INT PRIMARY KEY AUTO_INCREMENT,
+    brand_name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT
+);
+
+-- Bảng products (sản phẩm) (ĐÃ THÊM brand_id)
+CREATE TABLE products (
+    product_id INT PRIMARY KEY AUTO_INCREMENT,
+    pname VARCHAR(100) NOT NULL,
+    category_id INT,
+    brand_id INT, -- Thêm khóa ngoại thương hiệu
+    status ENUM('active', 'inactive') DEFAULT 'active',
+    main_image VARCHAR(255),
+    FOREIGN KEY (category_id) REFERENCES category(category_id),
+    FOREIGN KEY (brand_id) REFERENCES brand(brand_id)
+);
+
+
+-- Bảng product_detail (chi tiết sản phẩm)
+CREATE TABLE product_detail (
+    product_detail_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_id INT NOT NULL,
+    product_code VARCHAR(50) NOT NULL UNIQUE,
+    dname VARCHAR(100),
+    description TEXT,
+    stock_quantity INT DEFAULT 0,
+    size VARCHAR(30),
+    color VARCHAR(30),
+    cost DECIMAL(60,2),
+    profit_margin DECIMAL(5,2),
+    selling_price DECIMAL(60,2),
+    status ENUM('available', 'out_of_stock', 'discontinued') DEFAULT 'available',
+    imported_at DATETIME,
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
+);
+
+-- Bảng image (hình ảnh sản phẩm)
+CREATE TABLE image (
+    image_id INT PRIMARY KEY AUTO_INCREMENT,
+    product_code VARCHAR(50),
+    image_url VARCHAR(255) NOT NULL,
+    FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
+);
+
+-- Bảng payment_method (phương thức thanh toán)
+CREATE TABLE payment_method (
+    payment_method_id INT PRIMARY KEY AUTO_INCREMENT,
+    method_name VARCHAR(50) NOT NULL,
+    description TEXT,
+    status ENUM('active', 'inactive') DEFAULT 'active'
+);
+
+-- Bảng shipping_address (địa chỉ giao hàng)
+CREATE TABLE shipping_address (
+    address_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    full_name VARCHAR(100),
+    phone VARCHAR(20),
+    address_line TEXT,
+    city VARCHAR(100),
+    district VARCHAR(100),
+    postal_code VARCHAR(20),
+    is_default BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+
+-- Bảng orders (đơn hàng)
+CREATE TABLE orders (
+    order_id INT PRIMARY KEY AUTO_INCREMENT,
+    customer_id INT,
+    employee_id INT,
+    shipping_address_id INT,
+    order_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    total_amount DECIMAL(60,2) CHECK (total_amount >= 0),
+    payment_method_id INT,
+    delivery_date DATETIME DEFAULT NULL,
+    status ENUM('pending', 'confirmed', 'deliver','delivered', 'completed', 'cancelled') DEFAULT 'pending',
+    payment_status ENUM('unpaid', 'paid', 'refunded') DEFAULT 'unpaid',
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id),
+    FOREIGN KEY (employee_id) REFERENCES employee(employee_id),
+    FOREIGN KEY (payment_method_id) REFERENCES payment_method(payment_method_id),
+    FOREIGN KEY (shipping_address_id) REFERENCES shipping_address(address_id)
+);
+
+-- Bảng order_detail (chi tiết đơn hàng)
+CREATE TABLE order_detail (
+    order_detail_id INT PRIMARY KEY AUTO_INCREMENT,
+    order_id INT NOT NULL,
+    product_code VARCHAR(50),
+    quantity INT,
+    unit_price DECIMAL(60,2),
+    subtotal DECIMAL(60,2),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_code) REFERENCES product_detail(product_code)
+);
+
+-- Bảng batches (lô hàng nhập kho)
+CREATE TABLE batches (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_detail_id INT NOT NULL,
+    batch_code VARCHAR(50),
+    quantity INT DEFAULT 0,
+    imported_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_detail_id) REFERENCES product_detail(product_detail_id)
+);
+
+-- Insert data into role (vai trò nhân viên)
+INSERT INTO role (level, role_name) VALUES
+(1, 'staff'),
+(2, 'admin');
+
+-- Insert data into employee (nhân viên)
+INSERT INTO employee (code, full_name, email, phone, address, birth, level, hire_date, password) VALUES
+('EMP001', 'Nguyen Van A', 'nguyenvana@example.com', '0987654321', 'Hanoi, Vietnam', '1990-05-10', 1, '2023-01-01', 'password123'),
+('EMP002', 'Tran Thi B', 'tranthib@example.com', '0976543210', 'Ho Chi Minh, Vietnam', '1995-07-15', 2, '2023-02-15', 'adminpass');
+
+-- Insert data into customer (khách hàng)
+INSERT INTO customer (full_name, email, phone, address, password) VALUES
+('Le Van C', 'levanc@example.com', '0934567890', 'Da Nang, Vietnam', 'customerpass'),
+('Pham Thi D', 'phamthid@example.com', '0912345678', 'Can Tho, Vietnam', 'customerpass2');
+
+-- Insert data into category (danh mục sản phẩm)
+INSERT INTO category (category_name, category_detail_name) VALUES
+('Áo', 'Áo sơ mi'),
+('Áo', 'Áo thun'),
+('Quần', 'Quần jean'),
+('Quần', 'Quần âu'),
+('Giày', 'Giày thể thao');
+
+-- Insert data into brand (thương hiệu)
+INSERT INTO brand (brand_name, description) VALUES
+('Nike', 'Thương hiệu thể thao nổi tiếng'),
+('Adidas', 'Thương hiệu giày và quần áo thể thao'),
+('Zara', 'Thời trang cao cấp'),
+('Uniqlo', 'Thương hiệu Nhật Bản với thiết kế tối giản');
+
+-- Insert data into products (sản phẩm)
+INSERT INTO products (pname, category_id, brand_id, status, main_image) VALUES
+('Áo sơ mi', 1, 3, 'active', 'aosomi_trang.jpg'),
+('Áo thun Nike', 2, 1, 'active', 'aothun_nike.jpg'),
+('Quần jean xanh', 3, 2, 'active', 'quanjean_xanh.jpg'),
+('Giày thể thao Adidas', 5, 2, 'active', 'giay_adidas.jpg');
+
+-- Insert data into product_detail (chi tiết sản phẩm)
+INSERT INTO product_detail (product_id, product_code, dname, description, stock_quantity, size, color, cost, profit_margin, selling_price, status, imported_at) VALUES
+(1, 'SM-001', 'Áo sơ mi trắng size M', 'Áo sơ mi vải cotton', 50, 'M', 'Trắng', 200000, 20.00, 240000, 'available', NOW()),
+(2, 'TN-001', 'Áo thun Nike size L', 'Áo thun thể thao co giãn', 30, 'L', 'Đen', 300000, 25.00, 375000, 'available', NOW()),
+(3, 'QJ-001', 'Quần jean xanh size 32', 'Quần jean nam màu xanh đậm', 40, '32', 'Xanh', 400000, 30.00, 520000, 'available', NOW()),
+(4, 'GAD-001', 'Giày thể thao Adidas size 42', 'Giày thể thao Adidas chính hãng', 20, '42', 'Trắng', 800000, 35.00, 1080000, 'available', NOW());
+
+INSERT INTO product_detail (product_id, product_code, dname, description, stock_quantity, size, color, cost, profit_margin, selling_price, status, imported_at) VALUES
+(1, 'SM-009', 'Áo sơ mi đen size M', 'Áo sơ mi vải cotton', 50, 'M', 'Đen', 200000, 20.00, 240000, 'available', NOW());
+
+-- Insert data into image (hình ảnh sản phẩm)
+INSERT INTO image (product_code, image_url) VALUES
+('SM-001', 'aosomi_trang_1.jpg'),
+('TN-001', 'aothun_nike_1.jpg'),
+('QJ-001', 'quanjean_xanh_1.jpg'),
+('GAD-001', 'giay_adidas_1.jpg');
+
+-- Insert data into payment_method (phương thức thanh toán)
+INSERT INTO payment_method (method_name, description, status) VALUES
+('Credit Card', 'Thanh toán bằng thẻ tín dụng', 'active'),
+('Cash on Delivery', 'Thanh toán khi nhận hàng', 'active'),
+('Momo', 'Ví điện tử Momo', 'active');
+
+-- Insert data into shipping_address (địa chỉ giao hàng)
+INSERT INTO shipping_address (customer_id, full_name, phone, address_line, city, district, postal_code, is_default) VALUES
+(1, 'Le Van C', '0934567890', '123 Đường ABC', 'Da Nang', 'Hai Chau', '550000', TRUE),
+(2, 'Pham Thi D', '0912345678', '456 Đường XYZ', 'Can Tho', 'Ninh Kieu', '900000', TRUE);
+
+-- Insert data into orders (đơn hàng)
+INSERT INTO orders (customer_id, employee_id, shipping_address_id, order_date, total_amount, payment_method_id, delivery_date, status, payment_status) VALUES
+(1, 1, 1, NOW(), 240000, 1, NOW() + INTERVAL 3 DAY, 'confirmed', 'paid'),
+(2, 2, 2, NOW(), 375000, 2, NOW() + INTERVAL 5 DAY, 'pending', 'unpaid');
+
+-- Insert data into order_detail (chi tiết đơn hàng)
+INSERT INTO order_detail (order_id, product_code, quantity, unit_price, subtotal) VALUES
+(1, 'SM-001', 1, 240000, 240000),
+(2, 'TN-001', 1, 375000, 375000);
+
+-- Insert data into batches (lô hàng nhập kho)
+INSERT INTO batches (product_detail_id, batch_code, quantity, imported_at) VALUES
+(1, 'BATCH-001', 50, NOW()),
+(2, 'BATCH-002', 30, NOW());
+
