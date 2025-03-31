@@ -39,7 +39,8 @@
                 @endforeach
             </ul>
         </div>
-hehehehehegegegege
+
+dddđađá
 
         <div class="navbar-end">
             <div class="flex-none">
