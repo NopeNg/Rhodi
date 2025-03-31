@@ -22,5 +22,10 @@ class ProductDetail extends Model {
     public function images() {
         return $this->hasMany(Image::class, 'product_code', 'product_code');
     }
+   
+    public function carts()
+    {
+        return $this->hasMany(Cart::class, 'product_code', 'product_code');
+    }
 }
 

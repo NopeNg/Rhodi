@@ -149,6 +149,18 @@ CREATE TABLE batches (
     FOREIGN KEY (product_detail_id) REFERENCES product_detail(product_detail_id)
 );
 
+CREATE TABLE cart (
+    cart_id INT AUTO_INCREMENT PRIMARY KEY, -- ID của giỏ hàng
+    customer_id INT NOT NULL, -- Khách hàng liên kết với giỏ hàng
+    product_code VARCHAR(50) NOT NULL, -- Mã sản phẩm
+    quantity INT DEFAULT 1, -- Số lượng sản phẩm
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP, -- Thời gian thêm sản phẩm vào giỏ
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, -- Thời gian cập nhật
+    FOREIGN KEY (customer_id) REFERENCES customer(customer_id), -- Liên kết với bảng customer
+    FOREIGN KEY (product_code) REFERENCES product_detail(product_code) -- Liên kết với bảng product_detail
+);
+
+
 -- Insert data into role (vai trò nhân viên)
 INSERT INTO role (level, role_name) VALUES
 (1, 'staff'),

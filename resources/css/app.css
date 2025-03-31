@@ -39,6 +39,25 @@
   border-radius: 5px;
 }
 
+.responsive-img {
+  width: 100%; /* Kích thước chiều rộng theo container */
+  height: auto; /* Tự động điều chỉnh chiều cao theo tỷ lệ */
+  display: block; /* Loại bỏ khoảng trống giữa các ảnh */
+}
+
+.cover-img {
+  width: 100%; /* Kích thước chiều rộng theo container */
+  height: 300px; /* Chiều cao cố định */
+  object-fit: cover; /* Cắt ảnh để vừa khung mà không bị méo */
+  object-position: center; /* Canh giữa ảnh */
+}
+
+.contain-img {
+  width: 100%; /* Kích thước chiều rộng theo container */
+  height: 300px; /* Chiều cao cố định */
+  object-fit: contain; /* Giữ tỉ lệ ảnh, thêm khoảng trắng nếu cần */
+  background-color: #f0f0f0; /* Màu nền cho khoảng trắng */
+}
 
 
 

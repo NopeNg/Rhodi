@@ -98,7 +98,7 @@
                             <span class="text-lg font-bold">8 Items</span>
                             <span class="text-info">Subtotal: $999</span>
                             <div class="card-actions">
-                                <button class="btn">View cart </button>
+                                <button class="btn"><a href="/cart">View cart</a> </button>
                             </div>
                         </div>
                     </div>

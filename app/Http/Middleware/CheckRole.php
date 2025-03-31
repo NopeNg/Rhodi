@@ -21,5 +21,7 @@ class CheckRole
             return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập!']);
         }
         return $next($request);
+        
     }
+    
 }

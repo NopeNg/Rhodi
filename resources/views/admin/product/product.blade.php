@@ -111,10 +111,9 @@
           <tr>
           <th>Product ID</th>
           <th>Name</th>
-          <th>Category ID</th>
           <th>Category Name</th>
           <th>Category Detail Name</th>
-          <th>Total quantity</th>
+          <th>Brand Name</th>
           <th>Main image</th>
           <th>Status</th>
           <th>Actions</th>
@@ -124,15 +123,16 @@
           @foreach($products as $product)
         <tr>
         <td>{{ $product->product_id }}</td>
-        <td>{{ $product->name }}</td>
-        <td>{{ $product->category_id }}</td>
+        <td>{{ $product->pname }}</td>
         <td>{{ $product->category_name }}</td>
         <td>{{ $product->category_detail_name }}</td>
- 
+        <td>{{ $product -> brand_name }}</td>
+
         <td>
         @if($product->main_image)
       <img src="{{ asset('storage/' . $product->main_image) }}" alt="Product Image" width="80"
       class="rounded object-cover" />
+
     @else
     <span>No Image</span>
   @endif

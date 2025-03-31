@@ -77,14 +77,21 @@
     <main class="p-6 flex-1 overflow-y-auto">
 
 
+    @if ($errors->any())
+  <div class="alert alert-danger">
+    <ul>
+      @foreach ($errors->all() as $error)
+        <li>{{ $error }}</li>
+      @endforeach
+    </ul>
+  </div>
+@endif
 
-
-
-
-
-
-
-
+@if (session('success'))
+  <div class="alert alert-success">
+    {{ session('success') }}
+  </div>
+@endif
 
 
       <form action="{{ route('admin.products.update', $products->product_id) }}" method="POST" enctype="multipart/form-data">
@@ -96,26 +103,39 @@
   <!-- Tên sản phẩm -->
   <div class="mb-3">
     <label for="name" class="form-label">Tên Sản Phẩm</label>
-    <input type="text" name="name" class="form-control" value="{{ old('name', $products->name) }}" required>
+    <input type="text" name="name" class="form-control" value="{{ old('name', $products->name) }}" >
   </div>
 
   <!-- ID Danh mục -->
   <div class="mb-3">
     <label for="category_id" class="form-label">ID Danh Mục</label>
-    <input type="number" name="category_id" class="form-control" value="{{ old('category_id', $products->category_id) }}" required>
+    <input type="number" name="category_id" class="form-control" value="{{ old('category_id', $products->category_id) }}" >
   </div>
 
-  <!-- Tên danh mục -->
-  <div class="mb-3">
-    <label for="category_name" class="form-label">Tên Danh Mục</label>
-    <input type="text" name="category_name" class="form-control" value="{{ old('category_name', $products->category_name) }}">
-  </div>
+  <!-- Dropdown cho danh mục -->
+<div class="mb-3">
+  <label for="category_id" class="form-label">Danh Mục</label>
+  <select name="category_id" class="form-select">
+    @foreach ($categories as $category)
+      <option value="{{ $category->category_id }}" {{ $products->category_id == $category->category_id ? 'selected' : '' }}>
+        {{ $category->category_name }} - {{ $category->category_detail_name }}
+      </option>
+    @endforeach
+  </select>
+</div>
 
-  <!-- Tên chi tiết danh mục -->
-  <div class="mb-3">
-    <label for="category_detail_name" class="form-label">Chi Tiết Danh Mục</label>
-    <input type="text" name="category_detail_name" class="form-control" value="{{ old('category_detail_name', $products->category_detail_name) }}">
-  </div>
+<!-- Dropdown cho thương hiệu -->
+<div class="mb-3">
+  <label for="brand_id" class="form-label">Thương Hiệu</label>
+  <select name="brand_id" class="form-select">
+    @foreach ($brands as $brand)
+      <option value="{{ $brand->brand_id }}" {{ $products->brand_id == $brand->brand_id ? 'selected' : '' }}>
+        {{ $brand->brand_name }}
+      </option>
+    @endforeach
+  </select>
+</div>
+
 
   <!-- Tổng số lượng -->
   <div class="mb-3">
@@ -126,7 +146,7 @@
   <!-- Giá -->
   <div class="mb-3">
     <label for="price" class="form-label">Giá</label>
-    <input type="number" name="price" class="form-control" value="{{ old('price', $products->price) }}" required>
+    <input type="number" name="price" class="form-control" value="{{ old('price', $products->price) }}" >
   </div>
 
   <!-- Hình ảnh chính -->
@@ -144,7 +164,7 @@
   <!-- Trạng thái -->
   <div class="mb-3">
     <label for="status" class="form-label">Trạng Thái</label>
-    <select name="status" class="form-select" required>
+    <select name="status" class="form-select" >
       <option value="active" {{ $products->status == 'active' ? 'selected' : '' }}>Kích Hoạt</option>
       <option value="inactive" {{ $products->status == 'inactive' ? 'selected' : '' }}>Không Kích Hoạt</option>
     </select>

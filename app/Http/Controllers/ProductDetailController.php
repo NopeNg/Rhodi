@@ -33,10 +33,10 @@ class ProductDetailController extends Controller
         // Xác thực dữ liệu đầu vào
         $validatedData = $request->validate([
             'product_id' => 'required|integer|exists:products,product_id',
-            'name' => 'required|string|max:255',
+            'dname' => 'required|string|max:255',
             'description' => 'required|string',
             'size' => 'required|string',
-          
+
             'color' => 'required|string',
             'cost' => 'required|numeric',
             'stock_quantity' => 'required|integer|min:0',
@@ -50,7 +50,7 @@ class ProductDetailController extends Controller
             // Lưu vào bảng product_detail
             $productDetail = ProductDetail::create([
                 'product_id' => $validatedData['product_id'],
-                'name' => $validatedData['name'],
+                'dname' => $validatedData['name'],
                 'description' => $validatedData['description'],
                 'brand' => $validatedData['brand'],
                 'size' => $validatedData['size'],
@@ -160,7 +160,7 @@ class ProductDetailController extends Controller
     {
         // Xác thực dữ liệu đầu vào
         $validatedData = $request->validate([
-            'name' => 'nullable|string|max:255',
+            'dname' => 'nullable|string|max:255', // Cho phép để trống
             'description' => 'nullable|string',
             'size' => 'nullable|string|max:50',
             'color' => 'nullable|string|max:50',
@@ -173,10 +173,9 @@ class ProductDetailController extends Controller
         $productDetail = ProductDetail::findOrFail($product_detail_id);
 
         // Cập nhật thông tin sản phẩm, giữ giá trị cũ nếu trường bị bỏ trống
-        $productDetail->name = $validatedData['name'] ?? $productDetail->name;
+        $productDetail->dname = $validatedData['dname'] ?? $productDetail->dname;
         $productDetail->description = $validatedData['description'] ?? $productDetail->description;
         $productDetail->size = $validatedData['size'] ?? $productDetail->size;
-        // $productDetail->brand = $validatedData['brand'] ?? $productDetail->brand;
         $productDetail->color = $validatedData['color'] ?? $productDetail->color;
         $productDetail->cost = $validatedData['cost'] ?? $productDetail->cost;
         $productDetail->stock_quantity = $validatedData['stock_quantity'] ?? $productDetail->stock_quantity;
@@ -192,7 +191,7 @@ class ProductDetailController extends Controller
             }
 
             // Xóa hình ảnh cũ trong cơ sở dữ liệu
-            Image::where('product_code', $productDetail->product_code)->delete(); // Sửa ở đây
+            Image::where('product_code', $productDetail->product_code)->delete();
 
             // Lưu hình ảnh mới
             foreach ($request->file('images') as $imageFile) {
@@ -200,17 +199,19 @@ class ProductDetailController extends Controller
 
                 // Lưu vào bảng images
                 Image::create([
-                    'product_code' => $productDetail->product_code, // Lưu product_code
-                    'image_url' => $imagePath, // Lưu đường dẫn hình ảnh
+                    'product_code' => $productDetail->product_code,
+                    'image_url' => $imagePath,
                 ]);
             }
         }
 
         // Lưu thay đổi
         $productDetail->save();
+        dd($productDetail->toArray());
 
         // Chuyển hướng với thông báo thành công
         return redirect()->route('product.details.index', ['product_id' => $productDetail->product_id])
             ->with('success', 'Cập nhật chi tiết sản phẩm thành công!');
     }
+
 }

@@ -14,8 +14,16 @@
 <body class="">
   <!-- Đây là đầu trang  -->
    <x-weltopbar/>
+   @auth
+    <p>Xin chào, {{ auth()->user()->name }}</p>
+@else
+    <p>Chưa đăng nhập</p>
+    {{ dd(auth()->user()) }}
+@endauth
 
 
+
+<p>Session type: {{ session(key: 'type') }}</p>
 
   <!-- Đây là nơi chứa toàn bộ nội dung -->
   <main class="mainn hidden-on-scroll z-10 ">

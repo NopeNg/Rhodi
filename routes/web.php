@@ -1,5 +1,5 @@
 <?php
-
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CusProController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDetailController;
@@ -8,9 +8,14 @@ use Illuminate\Support\Facades\Route;
 require __DIR__ . '/auth.php';
 
 // Route cho trang chính
+// web.php
+
+
 Route::get('/', function () {
     return view('welcome');
-});
+})->middleware('auth', 'checkRole:customer'); // Áp dụng middleware checkRole với 'customer'
+
+
 
 
 
@@ -118,6 +123,11 @@ Route::put('/admin/product/details/{product_detail_id}', [ProductDetailControlle
 //trang giỏ hàng 
 use App\Http\Controllers\CartController;
 
+use App\Models\Category;
+Route::get('/api/category-details/{category_id}', function ($category_id) {
+    $details = Category::where('category_id', $category_id)->get(['category_detail_name']);
+    return response()->json($details);
+});
 
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::patch('/cart/update/{rowId}', [CartController::class, 'update'])->name('cart.update');
@@ -143,4 +153,41 @@ Route::get('/categories', [CusProController::class, 'getCategories'])->name('cat
 
 
 Route::get('/category/{id}', action: [CusProController::class, 'showProductsByCategory'])->name('category.products');
+
+
+// //route thêm sản phẩm vào giỏ hàng
+// Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+// Route::get('/cart', [CartController::class,'index'])->name('cart.index');
+// Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+// Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add')->middleware('auth:customer');
+// 
+// Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(middleware: 'auth');
+
+
+Route::middleware(['auth'])->group(function () {
+    // Hiển thị giỏ hàng
+    Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+    // Thêm sản phẩm vào giỏ hàng
+    Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+
+    // Cập nhật số lượng sản phẩm trong giỏ hàng
+    Route::patch('/cart/update/{productCode}', [CartController::class, 'updateCart'])->name('cart.update');
+
+    // Xóa sản phẩm khỏi giỏ hàng
+    Route::delete('/cart/remove/{productCode}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+    // Thanh toán (Checkout)
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+});
+
+// Hiển thị form đăng nhập
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+
+// Xử lý đăng nhập
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+// Đăng xuất
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 

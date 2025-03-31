@@ -13,14 +13,17 @@ class Products extends Model {
     public $timestamps = false; // Sử dụng timestamps
 
     // Các cột có thể được gán hàng loạt
-    protected $fillable = [
-        'name',
-        'category_id',
-        'price',
-        'status',
-        'main_image',
-        'total_quantity'
-    ];
+    // protected $fillable = [
+    //     'pname',
+    //     'category_id',
+    //     'price',
+    //     'status',
+    //     'main_image',
+    //     'total_quantity',
+    //     'brand_id'
+    // ];
+    protected $fillable = ['pname', 'category_id', 'brand_id', 'status', 'main_image'];
+
 
     // Các trường cần ẩn khi chuyển đổi thành mảng hoặc JSON
     protected $hidden = [
@@ -42,4 +45,9 @@ class Products extends Model {
     public function productDetails() {
         return $this->hasMany(ProductDetail::class, 'product_id', 'product_id');
     }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id', 'brand_id');
+    }
+    
 }
