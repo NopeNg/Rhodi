@@ -13,9 +13,6 @@ Route::post('/register', [CustomerRegisterController::class, 'register'])->name(
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
 // Xử lý đăng nhập
 Route::post('/login', [AuthController::class, 'login'])->name('login');
-//vào trang welcome
-Route::get('/welcome', [AuthController::class, 'showWelcomePage'])->name('welcome');
-
 // Đăng xuất
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 

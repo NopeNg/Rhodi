@@ -11,21 +11,19 @@ require __DIR__ . '/auth.php';
 // web.php
 
 
-Route::get('/', function () {
+Route::get('/wel', function () {
+    dd(Auth::check(), Auth::user());
     return view('welcome');
-})->middleware('auth', 'checkRole:customer'); // Áp dụng middleware checkRole với 'customer'
-
-
-
+});
 
 
 Route::get('/3', function () {
     return view('cusproduct');
 });
 
-Route::get('/5',function(){
-    return  view('\customer\show');
-});
+// Route::get('/5',function(){
+//     return  view('customer.show');
+// });
 
 
 // Route cho các trang admin
@@ -165,29 +163,35 @@ Route::get('/category/{id}', action: [CusProController::class, 'showProductsByCa
 
 
 Route::middleware(['auth'])->group(function () {
-    // Hiển thị giỏ hàng
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-
-    // Thêm sản phẩm vào giỏ hàng
     Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-
-    // Cập nhật số lượng sản phẩm trong giỏ hàng
     Route::patch('/cart/update/{productCode}', [CartController::class, 'updateCart'])->name('cart.update');
-
-    // Xóa sản phẩm khỏi giỏ hàng
     Route::delete('/cart/remove/{productCode}', [CartController::class, 'removeFromCart'])->name('cart.remove');
-
-    // Thanh toán (Checkout)
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 
-// Hiển thị form đăng nhập
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 
-// Xử lý đăng nhập
-Route::post('/login', [AuthController::class, 'login'])->name('login');
 
-// Đăng xuất
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+});
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+
+// Route sau đăng nhập
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard'); // Trang dashboard
+    })->name('dashboard');
+});
+
+// Route bảo vệ theo vai trò
+Route::middleware(['auth', 'checkRole:admin'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.index'); // Trang admin
+    })->name('admin.index');
+});
 
 

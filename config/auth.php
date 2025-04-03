@@ -4,12 +4,11 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Defaults
+    | Default Authentication Guard
     |--------------------------------------------------------------------------
     |
-    | This option defines the default authentication "guard" and password
-    | reset "broker" for your application. You may change these values
-    | as required, but they're a perfect start for most applications.
+    | This option controls the default guard used for authentication.
+    | You may change this default as required, but it is a perfect start.
     |
     */
 
@@ -23,25 +22,20 @@ return [
     | Authentication Guards
     |--------------------------------------------------------------------------
     |
-    | You may define every authentication guard for your application here.
-    | A great default configuration has been defined for you using session storage
-    | and the Eloquent user provider.
-    |
-    | Supported: "session"
+    | Here you may define every authentication guard for your application.
+    | Of course, a great default configuration has been defined for you
+    | here which uses session storage and the Eloquent user provider.
     |
     */
 
     'guards' => [
-        // Guard dành cho nhân viên/quản trị viên
         'web' => [
             'driver' => 'session',
-            'provider' => 'users',
+            'provider' => 'users', // Sử dụng provider cho employee
         ],
-
-        // Guard dành cho khách hàng
         'customer' => [
             'driver' => 'session',
-            'provider' => 'customers',
+            'provider' => 'customers', // Sử dụng provider cho customer
         ],
     ],
 
@@ -50,36 +44,31 @@ return [
     | User Providers
     |--------------------------------------------------------------------------
     |
-    | All authentication guards have a user provider. This defines how the
-    | users are retrieved out of your database or storage systems used
-    | by this application to persist your user's data.
-    |
-    | Supported: "database", "eloquent"
+    | All authentication drivers have a user provider. This defines how the
+    | users are actually retrieved out of your database or other storage
+    | mechanisms used by this application to persist your user's data.
     |
     */
 
     'providers' => [
-        // Provider cho bảng users (nhân viên/quản trị viên)
-        'users' => [
+        'users' => [ // Provider cho employee
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => App\Models\Employee::class, // Model employee
         ],
-
-        // Provider cho bảng customer (khách hàng)
-        'customers' => [
+        'customers' => [ // Provider cho customer
             'driver' => 'eloquent',
-            'model' => App\Models\Customer::class,
+            'model' => App\Models\Customer::class, // Model customer
         ],
     ],
 
     /*
     |--------------------------------------------------------------------------
-    | Resetting Passwords
+    | Password Reset
     |--------------------------------------------------------------------------
     |
-    | Here you may define multiple password reset configurations if you have
-    | more than one user table or model in the application and you want to
-    | have separate password reset settings based on the specific user types.
+    | You may specify multiple password reset configurations if you have more
+    | than one user table or model in the application and you want to have
+    | separate password reset settings based on the specific user types.
     |
     */
 
@@ -88,14 +77,11 @@ return [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
-            'throttle' => 60,
         ],
-
         'customers' => [
             'provider' => 'customers',
             'table' => 'password_resets',
             'expire' => 60,
-            'throttle' => 60,
         ],
     ],
 
@@ -104,8 +90,9 @@ return [
     | Password Confirmation Timeout
     |--------------------------------------------------------------------------
     |
-    | The amount of seconds before a password confirmation expires.
-    | By default, this lasts for three hours.
+    | Here you may define the amount of seconds before a password confirmation
+    | times out and the user is prompted to re-enter their password via the
+    | confirmation screen. By default, the timeout lasts for three hours.
     |
     */
 

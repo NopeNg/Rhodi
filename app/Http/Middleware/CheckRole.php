@@ -3,25 +3,18 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Session;
-
+use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next, $role): Response
+    public function handle($request, Closure $next, $role)
     {
-        if (Session::get('type') !== $role) {
-            return redirect()->route('login')->withErrors(['email' => 'Bạn không có quyền truy cập!']);
+        // Kiểm tra người dùng đã đăng nhập và có vai trò khớp
+        if (Auth::check() && session('type') === $role) {
+            return $next($request);
         }
-        return $next($request);
-        
+
+        // Chuyển hướng đến trang đăng nhập nếu không đủ quyền
+        return redirect()->route('login')->withErrors(['error' => 'Bạn không có quyền truy cập.']);
     }
-    
 }

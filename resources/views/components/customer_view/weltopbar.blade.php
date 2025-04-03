@@ -120,12 +120,28 @@
                             </a>
                         </li>
                         <li><a>Settings</a></li>
-                        <li><a>
+                        <!-- <li><a>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="btn btn-danger">Đăng Xuất</button>
                                 </form>
-                            </a></li>
+                            </a></li> -->
+
+
+                        <ul class="navbar-nav">
+                            @if(Auth::check())
+                                <button
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng
+                                    xuất</button>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    @csrf
+                                </form>
+                            @else
+                                <a href="{{ route('login') }}">Đăng nhập</a>
+                            @endif
+
+                        </ul>
+
                     </ul>
                 </div>
             </div>
