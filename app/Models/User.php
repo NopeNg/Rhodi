@@ -45,4 +45,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getAuthIdentifierName()
+    {
+        return 'email';
+    }
+    public function getAuthPassword()
+    {
+        return 'password';
+    }
 }

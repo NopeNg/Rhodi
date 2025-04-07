@@ -5,7 +5,11 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductDetailController;
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+
 require __DIR__ . '/auth.php';
+require __DIR__ . '/cus.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/staff.php';
 
 // Route cho trang chính
 // web.php
@@ -172,26 +176,6 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-Route::middleware('guest')->group(function () {
-    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.process');
-});
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-
-
-// Route sau đăng nhập
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard'); // Trang dashboard
-    })->name('dashboard');
-});
-
-// Route bảo vệ theo vai trò
-Route::middleware(['auth', 'checkRole:admin'])->group(function () {
-    Route::get('/admin', function () {
-        return view('admin.index'); // Trang admin
-    })->name('admin.index');
-});
 
 

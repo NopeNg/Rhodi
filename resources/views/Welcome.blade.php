@@ -41,6 +41,11 @@
   <p>Vui lòng <a href="{{ route('login') }}">đăng nhập</a> để xem thông tin tài khoản.</p>
 @endif
 
+@if(Session::has('customerId'))
+    <p>Your customer ID is: {{ Session::get('customerId') }}</p>
+@endif
+
+
     <!-- Banner Carousel -->
     <div class="relative w-full overflow-hidden h-[90vh] ">
       <!-- Slide Items -->

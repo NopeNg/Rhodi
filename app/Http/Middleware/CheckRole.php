@@ -3,18 +3,22 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckRole
 {
-    public function handle($request, Closure $next, $role)
+    public function handle(Request $request, Closure $next, $role)
     {
-        // Kiểm tra người dùng đã đăng nhập và có vai trò khớp
-        if (Auth::check() && session('type') === $role) {
-            return $next($request);
+        // Kiểm tra nếu người dùng đã đăng nhập với đúng guard
+        if ($role === 'employee' && !Auth::guard('employee')->check()) {
+            return redirect()->route('login')->withErrors(['login_error' => 'You must login as Employee.']);
         }
-
-        // Chuyển hướng đến trang đăng nhập nếu không đủ quyền
-        return redirect()->route('login')->withErrors(['error' => 'Bạn không có quyền truy cập.']);
+        
+        if ($role === 'customer' && !Auth::guard('customer')->check()) {
+            return redirect()->route('login')->withErrors(['login_error' => 'You must login as Customer.']);
+        }
+        
+        return $next($request);
     }
 }

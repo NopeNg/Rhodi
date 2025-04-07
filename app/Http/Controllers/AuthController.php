@@ -1,19 +1,20 @@
 <?php
+// app/Http/Controllers/AuthController.php
 
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth; // Xác thực người dùng
-use Illuminate\Support\Facades\Hash; // Xử lý mật khẩu
-use Illuminate\Support\Facades\Session; // Quản lý session
-use Illuminate\Support\Facades\DB; // Truy vấn cơ sở dữ liệu
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Employee;
+use App\Models\Customer;
 
 class AuthController extends Controller
 {
     // Hiển thị form đăng nhập
     public function showLoginForm()
     {
-        return view('auth.login'); // Hiển thị form login (tạo trong views/auth/login.blade.php)
+        return view('auth.login');
     }
 
     // Xử lý đăng nhập
@@ -24,58 +25,39 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        $user = DB::table('employee')
-            ->join('role', 'employee.level', '=', 'role.level')
-            ->where('employee.email', $credentials['email'])
-            ->select('employee.employee_id as id', 'employee.email', 'employee.password', 'role.role_name')
-            ->first();
+        // Kiểm tra đăng nhập cho Employee
+        $employee = Employee::where('email', $credentials['email'])->first();
+        if ($employee && Auth::guard('employee')->attempt($credentials)) {
+            $role = $employee->role->role_name;
 
-        $type = 'customer';
-
-        if (!$user) {
-            $user = DB::table('customer')
-                ->where('email', $credentials['email'])
-                ->select('customer.customer_id as id', 'customer.email', 'customer.password')
-                ->first();
-        } else {
-            $type = $user->role_name;
+            if ($role === 'admin') {
+                return redirect()->route('admin.dashboard');
+            } elseif ($role === 'staff') {
+                return redirect()->route('staff.dashboard');
+            }
         }
 
-        if ($user && Hash::check($credentials['password'], $user->password)) {
-            Auth::loginUsingId($user->id);
-            $request->session()->regenerate();
-
-            // Thêm thông báo vào session
-            session()->flash('success', 'Đăng nhập thành công!');
-
-            // Chuyển hướng người dùng tới trang welcome
-            return match ($type) {
-                'admin' => redirect()->route('admin.index'),
-                'staff' => redirect()->route('staff.dashboard'),
-                default => redirect()->route('welcome'),
-            };
+        // Kiểm tra đăng nhập cho Customer
+        $customer = Customer::where('email', $credentials['email'])->first();
+        if ($customer && Auth::guard('customer')->attempt($credentials)) {
+            return redirect()->route('customer.dashboard');
         }
 
-        return redirect()->back()->withErrors(['login_error' => 'Thông tin đăng nhập không đúng.']);
+        return back()->withErrors(['login_error' => 'Invalid credentials']);
     }
 
-
-    // Xử lý đăng xuất
-    public function logout(Request $request)
+    // Xử lý logout
+    public function logout()
     {
-        Auth::logout(); // Đăng xuất người dùng
-        $request->session()->invalidate(); // Xóa toàn bộ session
-        $request->session()->regenerateToken(); // Tạo lại CSRF token
-
-        return redirect()->route('login')->with('success', 'Đăng xuất thành công');
+        if (Auth::guard('employee')->check()) {
+            Auth::guard('employee')->logout();
+        }
+    
+        if (Auth::guard('customer')->check()) {
+            Auth::guard('customer')->logout();
+        }
+    
+        return redirect()->route('login.form');
     }
-
-    // Hiển thị trang chào mừng (welcome) sau khi đăng nhập thành công
-    public function showWelcomePage()
-    {
-        $products = DB::table('products')->get(); // Lấy danh sách sản phẩm
-        $customer = Auth::user(); // Lấy thông tin người dùng đã đăng nhập
-
-        return view('welcome', compact('products', 'customer')); // Truyền dữ liệu sang view welcome
-    }
+    
 }

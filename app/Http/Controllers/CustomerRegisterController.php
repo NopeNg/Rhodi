@@ -39,8 +39,16 @@ class CustomerRegisterController extends Controller
             'created_at' => now(),
         ]);
 
+
+          // Lấy ID của khách hàng vừa đăng ký và lưu vào session
+    $customerId = DB::table('customer')
+    ->where('email', $request->email)
+    ->first()
+    ->customer_id;
+
         // Lưu thông tin vào session (nếu cần)
-        Session::put('user', $request->name);
+        Session::put('customer_id', $customerId);
+
 
         // Chuyển hướng về trang đăng nhập sau khi đăng ký thành công
         return redirect()->route('login.form')->with('success', 'Đăng ký thành công! Vui lòng đăng nhập.');

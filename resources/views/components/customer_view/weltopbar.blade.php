@@ -17,7 +17,7 @@
 
         <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal px-1">
-                <li><a href="/">TRANG CHỦ</a></li>
+                <li><a href="{{ '/main'}}">TRANG CHỦ</a></li>
 
                 @foreach($groupedCategories as $categoryName => $details)
                     <li class="dropdown dropdown-hover relative">
@@ -132,7 +132,7 @@
                             @if(Auth::check())
                                 <button
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng
-                                    xuất</button>
+                                    xuất </button>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                     @csrf
                                 </form>
