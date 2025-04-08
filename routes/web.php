@@ -140,21 +140,21 @@ Route::delete('/cart/destroy/{rowId}', [CartController::class, 'destroy'])->name
 Route::get('/', [CusProController::class, 'index'])->name('home');
 
 
-// Route cho hiển thị chi tiết sản phẩm
-Route::get('/product/{product_id}', [CusProController::class, 'show'])->name('product.show');
+// // Route cho hiển thị chi tiết sản phẩm
+// Route::get('/product/{product_id}', [CusProController::class, 'show'])->name('product.show');
 
-// Route cho hiển thị sản phẩm theo category_id
-Route::get('/category/{category_id}', [CusProController::class, 'showc'])->name('category.show');
+// // Route cho hiển thị sản phẩm theo category_id
+// Route::get('/category/{category_id}', [CusProController::class, 'showc'])->name('category.show');
 
-// Route cho hiển thị sản phẩm theo category_id (có thể dùng cho một view khác)
-Route::get('/products/category/{category_id}', [CusProController::class, 'showProductsByCategory'])->name('products.byCategory');
+// // Route cho hiển thị sản phẩm theo category_id (có thể dùng cho một view khác)
+// Route::get('/products/category/{category_id}', [CusProController::class, 'showProductsByCategory'])->name('products.byCategory');
 
-// Route cho lấy danh sách thể loại (có thể không cần thiết nếu bạn đã tích hợp vào view khác)
-Route::get('/categories', [CusProController::class, 'getCategories'])->name('categories.index');
+// // Route cho lấy danh sách thể loại (có thể không cần thiết nếu bạn đã tích hợp vào view khác)
+// Route::get('/categories', [CusProController::class, 'getCategories'])->name('categories.index');
 
 
 
-Route::get('/category/{id}', action: [CusProController::class, 'showProductsByCategory'])->name('category.products');
+// Route::get('/category/{id}', action: [CusProController::class, 'showProductsByCategory'])->name('category.products');
 
 
 // //route thêm sản phẩm vào giỏ hàng
